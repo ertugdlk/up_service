@@ -1,6 +1,5 @@
 const _ = require('lodash')
 
-//const User = require('../models/User')
 const User = require('up_core/models/User')
 
 class AuthController {
