@@ -4,34 +4,35 @@ const Config     = require('config')
 const Cors = require('cors')
 const Mongoose = require('mongoose')
 
-const App = Express()
-
-App.use(BodyParser.json())
-App.use(BodyParser.urlencoded({ extended: true }))
-App.use(Cors())
-
 //DATABASE
-const dbUrl = Config.get('database.url');
 Mongoose.set('useFindAndModify', false) // FindAndModify method is deprecated. If this line is not exists, then it throws error.
 Mongoose.set('useCreateIndex', true) // ensureIndex is deprecated. If this line is not exists, then it throws error.
-Mongoose.connect(dbUrl)
+Mongoose.connect(Config.get('database.url'), { useNewUrlParser: true});
 
 Mongoose.connection.on('open', (d) => 
 {
-    console.log('# --> Database connection is opened. (DB)')
+    console.log('# --> Database connection is opened. (Server)')
 })
 Mongoose.connection.on("error", function(err) {
     console.log("Could not connect to mongo server!");
     return console.log(err);
 });
 
+const User = require('up_core/models/User')
+
+const App = Express()
+
+App.use(BodyParser.json())
+App.use(BodyParser.urlencoded({ extended: true }))
+App.use(Cors())
+
+
 //Service
-App.listen((process.env.PORT || 5000), () => {
-    console.log('# --> Service connection is opened. (App.js)')
-})
+App.listen(process.env.PORT || 5000)
+
 App.get( '/' , (req,res) => res.send('Hello, welcome to unkownpros API service'));
 
 //Routes
-//App.use('/users' , require('./Routes/UserRoute')) 
+App.use('/auth' , require('./routes/AuthenticationRoute'))
 
 

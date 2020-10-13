@@ -1,10 +1,7 @@
 const _ = require('lodash')
-const Config = require('config')
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
-const mongoose = require('mongoose')
 
-const User = require('../node_modules/up_core/models/User')
+//const User = require('../models/User')
+const User = require('up_core/models/User')
 
 class AuthController {
     static async createUser(req,res,next) 
@@ -16,7 +13,10 @@ class AuthController {
                 .pick(['nickname', 'name', 'surname', 'email', 'password'])
                 .value()
             
-            const user = await new User(mappedUser)
+            const user = await new User (mappedUser)
+            await user.save()
+
+            return res.send(user)	
         }
         catch (error)
         {
@@ -25,3 +25,5 @@ class AuthController {
         }
     }
 }
+
+module.exports = AuthController
