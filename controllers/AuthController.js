@@ -33,17 +33,21 @@ class AuthController {
                 .pick(['email', 'password'])
                 .value()
 
-            const user = await User.findOne({ email: mappedCredentials.email} )         
+            const user = await User.findOne({ email: mappedCredentials.email})         
 
             if(!user)
             {
                 throw new error ({error: 'Invalid Login Credentials'})
             }
 
-            if(user.findByCredentials(mappedCredentials.password))
+            if(!user.findByCredentials(mappedCredentials.password))
             {
-                res.send('success')
+                throw new error ({error: 'Invalid Login Credentials'})
             }
+            
+            const token = user.generateAuthToken()
+
+            res.send({user,token})
         }
         catch(error)
         {
