@@ -23,6 +23,33 @@ class AuthController {
             res.status(400).send(error)
         }
     }
+    
+    static async authenticateUser(req, res, next)
+    {
+        try
+        {
+            const mappedCredentials =
+            _.chain(req.body)
+                .pick(['email', 'password'])
+                .value()
+
+            const user = await User.findOne({ email: mappedCredentials.email} )         
+
+            if(!user)
+            {
+                throw new error ({error: 'Invalid Login Credentials'})
+            }
+
+            if(user.findByCredentials(mappedCredentials.password))
+            {
+                res.send('success')
+            }
+        }
+        catch(error)
+        {
+            throw error
+        }
+    }
 }
 
 module.exports = AuthController
