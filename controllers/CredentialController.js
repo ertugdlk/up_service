@@ -19,9 +19,21 @@ class CredentialController {
         }
         catch(error)
         {
-            next(error)
-            res.status(400).send(error)
+            throw error
         }        
+    }
+
+    static async getCredential(req,res,next) {
+        try
+        {
+            const credentialOfUser = await Credential.findOne({user: req.body.userId})
+
+            res.send({msg:"Success", credentialOfUser})
+        }
+        catch(error)
+        {
+            throw error
+        }
     }
 }
 
