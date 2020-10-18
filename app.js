@@ -32,7 +32,9 @@ App.use(Cors())
 //Service
 App.listen(process.env.PORT || 5000)
 
-App.get( '/' , (req,res) => res.send('Hello, welcome to unkownpros API service'));
+App.get( '/' , (req,res) => res.json({msg:'Hello, welcome to unkownpros API service', 
+Endpoints:" Create Credential: POST /credential/create"
+}));
 
 //Routes
 App.use('/auth' , require('./routes/AuthenticationRoute'))
