@@ -36,5 +36,6 @@ App.get( '/' , (req,res) => res.send('Hello, welcome to unkownpros API service')
 
 //Routes
 App.use('/auth' , require('./routes/AuthenticationRoute'))
+App.use('/credential', require('./routes/CredentialRoute'))
 
 
