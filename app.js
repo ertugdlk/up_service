@@ -3,6 +3,7 @@ const BodyParser = require('body-parser')
 const Config     = require('config')
 const Cors = require('cors')
 const Mongoose = require('mongoose')
+const Helmet = require('helmet')
 
 //DATABASE
 Mongoose.set('useFindAndModify', false) // FindAndModify method is deprecated. If this line is not exists, then it throws error.
@@ -22,6 +23,7 @@ const User = require('up_core/models/User')
 
 const App = Express()
 
+App.use(Helmet())
 App.use(BodyParser.json())
 App.use(BodyParser.urlencoded({ extended: true }))
 App.use(Cors())
