@@ -27,8 +27,9 @@ class CredentialController {
         try
         {
             const credentialOfUser = await Credential.findOne({user: res.locals.userId})
+            const identity = await decrypt(credentialOfUser.identityID)
 
-            res.send({msg:"Success", credentialOfUser:credentialOfUser})
+            res.send({msg:"Success", credential:credentialOfUser, identity:identity})
         }
         catch(error)
         {
