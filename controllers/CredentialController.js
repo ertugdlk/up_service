@@ -26,9 +26,9 @@ class CredentialController {
     static async getCredential(req,res,next) {
         try
         {
-            const credentialOfUser = await Credential.findOne({user: req.body.userId})
+            const credentialOfUser = await Credential.findOne({user: res.locals.userId})
 
-            res.send({msg:"Success", credentialOfUser})
+            res.send({msg:"Success", credentialOfUser:credentialOfUser})
         }
         catch(error)
         {
