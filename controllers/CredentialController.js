@@ -1,6 +1,7 @@
 const _ = require('lodash')
 const Credential = require('up_core/models/UserCredentials')
 const {encrypt, decrypt} = require('up_core/utils/Cryptoutil')
+const User = require('up_core/models/User')
 
 class CredentialController {
     static async addCredential(req,res,next) {
@@ -8,12 +9,15 @@ class CredentialController {
         {
             const mappedCredential = 
             _.chain(req.body)
-                .pick(['user', 'identityID', 'phone', 'name', 'surname'])
+                .pick(['user','identityID', 'phone', 'name', 'surname'])
                 .value()
 
+            mappedCredential.user = res.locals.userId
             mappedCredential.identityID = await encrypt(mappedCredential.identityID)
+
             const credential = await new Credential(mappedCredential)
             await credential.save()
+            await User.findOneAndUpdate({_id = res.locals.userId}, {isVerified= true})
 
             res.send(credential)
         }

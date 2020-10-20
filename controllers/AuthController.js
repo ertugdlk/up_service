@@ -9,9 +9,13 @@ class AuthController {
         {
             const mappedUser = 
             _.chain(req.body)
-                .pick(['nickname', 'email', 'password'])
+                .pick(['nickname', 'email', 'password', "dateOfBirth"])
                 .value()
             
+            const splittedDate = mappedUser.dateOfBirth.split('-')
+            const date = new Date()
+            date.setFullYear(splittedDate[2],splittedDate[1]-1,splittedDate[0])
+            mappedUser.dateOfBirth = date
             const user = await new User (mappedUser)
             await user.save()
 
@@ -33,11 +37,11 @@ class AuthController {
                 .pick(['nickname', 'password'])
                 .value()
 
-            const user = await User.findOne({ nickname: mappedCredentials.email})         
+            const user = await User.findOne({ nickname: mappedCredentials.nickname})         
 
             if(!user)
             {
-                throw new error ({error: 'Invalid Login Credentials'})
+                    throw new error ({error: 'Invalid Login Credentials'})
             }
 
             if(!user.findByCredentials(mappedCredentials.password))
