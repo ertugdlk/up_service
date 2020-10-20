@@ -8,7 +8,7 @@ class CredentialController {
         {
             const mappedCredential = 
             _.chain(req.body)
-                .pick(['user', 'identityID', 'phone'])
+                .pick(['user', 'identityID', 'phone', 'name', 'surname'])
                 .value()
 
             mappedCredential.identityID = await encrypt(mappedCredential.identityID)

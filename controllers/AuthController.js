@@ -9,7 +9,7 @@ class AuthController {
         {
             const mappedUser = 
             _.chain(req.body)
-                .pick(['nickname', 'name', 'surname', 'email', 'password'])
+                .pick(['nickname', 'email', 'password'])
                 .value()
             
             const user = await new User (mappedUser)
@@ -30,10 +30,10 @@ class AuthController {
         {
             const mappedCredentials =
             _.chain(req.body)
-                .pick(['email', 'password'])
+                .pick(['nickname', 'password'])
                 .value()
 
-            const user = await User.findOne({ email: mappedCredentials.email})         
+            const user = await User.findOne({ nickname: mappedCredentials.email})         
 
             if(!user)
             {
