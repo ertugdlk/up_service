@@ -40,6 +40,19 @@ class CredentialController {
             throw error
         }
     }
+
+    static async checkIdentity(req,res,next) {
+        try
+        {
+            const status = res.locals.status
+            
+            res.json(status)
+        }
+        catch(error)
+        {
+            throw error
+        }
+    }
 }
 
 module.exports = CredentialController
