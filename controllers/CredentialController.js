@@ -17,7 +17,7 @@ class CredentialController {
 
             const credential = await new Credential(mappedCredential)
             await credential.save()
-            await User.findOneAndUpdate({_id = res.locals.userId}, {isVerified= true})
+            await User.findOneAndUpdate({_id : res.locals.userId}, {isVerified : true})
 
             res.send(credential)
         }
