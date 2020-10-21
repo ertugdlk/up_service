@@ -15,7 +15,6 @@ class AuthController {
             const splittedDate = mappedUser.dateOfBirth.split('-')
             const date = new Date()
             date.setFullYear(splittedDate[2],splittedDate[1]-1,splittedDate[0])
-            date.setTime(0)
             mappedUser.dateOfBirth = date
 
             const user = await new User (mappedUser)

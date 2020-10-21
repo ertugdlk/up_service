@@ -44,9 +44,9 @@ class CredentialController {
     static async checkIdentity(req,res,next) {
         try
         {
-            const status = res.locals.status
+            const result = res.locals.result
             
-            res.json(status)
+            res.send(result)
         }
         catch(error)
         {
