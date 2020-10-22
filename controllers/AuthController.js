@@ -9,13 +9,8 @@ class AuthController {
         {
             const mappedUser = 
             _.chain(req.body)
-                .pick(['nickname', 'email', 'password', "dateOfBirth"])
+                .pick(['nickname', 'email', 'password'])
                 .value()
-            
-            const splittedDate = mappedUser.dateOfBirth.split('-')
-            const date = new Date()
-            date.setFullYear(splittedDate[2],splittedDate[1]-1,splittedDate[0])
-            mappedUser.dateOfBirth = date
 
             const user = await new User (mappedUser)
             await user.save()

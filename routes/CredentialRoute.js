@@ -13,9 +13,4 @@ router.get('/find',
     Authentication.isJWTVerified,
         Controller.getCredential)
 
-router.get('/checkId',
-    Authentication.isJWTVerified,
-        Identity.isIdentityIDtrue,
-            Controller.checkIdentity)
-
 module.exports = router
