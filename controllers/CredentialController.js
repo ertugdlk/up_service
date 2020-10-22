@@ -2,7 +2,8 @@ const _ = require('lodash')
 const Credential = require('up_core/models/UserCredentials')
 const {encrypt, decrypt} = require('up_core/utils/Cryptoutil')
 const User = require('up_core/models/User')
-const soap = require('soap')
+const Soap = require('soap')
+const Config = require('config')
 
 class CredentialController {
     static async addCredential(req,res,next) {
@@ -26,9 +27,9 @@ class CredentialController {
             }
             
             var response = {}
-            const url="https://tckimlik.nvi.gov.tr/Service/KPSPublic.asmx?WSDL"
+            const url= Config.get('TCKN.url')
 
-            soap.createClient(url, function(err, client) {
+            Soap.createClient(url, function(err, client) {
                 client.TCKimlikNoDogrula(args, function(err, result) {
                     response = result
                     });

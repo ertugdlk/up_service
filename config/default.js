@@ -12,7 +12,11 @@ const defaultConfig =
         {
             "active": true // To make token system disable, set this to `false`
         }
-	}
+    },
+    "TCKN":
+    {
+        "url":"https://tckimlik.nvi.gov.tr/Service/KPSPublic.asmx?WSDL"
+    }
 }
 
 module.exports = defaultConfig

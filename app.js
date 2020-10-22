@@ -19,8 +19,6 @@ Mongoose.connection.on("error", function(err) {
     return console.log(err);
 });
 
-const User = require('up_core/models/User')
-
 const App = Express()
 
 App.use(Helmet())
