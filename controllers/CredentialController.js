@@ -36,14 +36,20 @@ class CredentialController {
 
             if(response)
             {
-            mappedCredential.user = res.locals.userId
-            mappedCredential.identityID = await encrypt(mappedCredential.identityID.toString())
+                if(response.TCKimlikNoDogrulaResult == true){
+                    mappedCredential.user = res.locals.userId
+                    mappedCredential.identityID = await encrypt(mappedCredential.identityID.toString())
 
-            const credential = await new Credential(mappedCredential)
-            await credential.save()
-            await User.findOneAndUpdate({_id : res.locals.userId}, {isVerified : true})
+                    const credential = await new Credential(mappedCredential)
+                    await credential.save()
+                    await User.findOneAndUpdate({_id : res.locals.userId}, {isVerified : true})
 
-            res.send({"Credential": credential , "TCKN": response.TCKimlikNoDogrulaResult})
+                    res.send({"status": "success","Credential": credential , "TCKN": response.TCKimlikNoDogrulaResult})
+                }
+                else(response.TCKimlikNoDogrulaResult == false)
+                {
+                    res.send({"status": "failed", "msg": "TCKN and Credential information not match "})
+                }
             }
         }
         catch(error)
