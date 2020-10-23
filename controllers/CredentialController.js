@@ -14,11 +14,13 @@ class CredentialController {
                 .pick(['user','identityID', 'phone', 'name', 'surname', 'dateOfBirth'])
                 .value()
 
+            //Date Format
             const splittedDate = mappedCredential.dateOfBirth.split('-')
             const date = new Date()
             date.setFullYear(splittedDate[2],splittedDate[1]-1,splittedDate[0])
             mappedCredential.dateOfBirth = date
 
+            //TCKN soap req args
             const args={
             "TCKimlikNo": mappedCredential.identityID,
             "Ad": mappedCredential.name,
@@ -40,10 +42,8 @@ class CredentialController {
                 if(response.TCKimlikNoDogrulaResult == true){
                     mappedCredential.user = res.locals.userId
                     mappedCredential.identityID = await encrypt(mappedCredential.identityID.toString())
-
                     const credential = await new Credential(mappedCredential)
                     await credential.save()
-                    await User.findOneAndUpdate({_id : res.locals.userId}, {isVerified : true})
 
                     res.send({"status": "success","Credential": credential , "TCKN": response.TCKimlikNoDogrulaResult})
                 }
