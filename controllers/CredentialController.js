@@ -1,9 +1,8 @@
 const _ = require('lodash')
 const Credential = require('up_core/models/UserCredentials')
 const {encrypt, decrypt} = require('up_core/utils/Cryptoutil')
+const {identity} = require('up_core/utils/TCKNutil')
 const User = require('up_core/models/User')
-const Soap = require('soap')
-const easy_soap = require('easysoap')
 const Config = require('config')
 
 class CredentialController {
@@ -26,7 +25,7 @@ class CredentialController {
                 'TCKimlikNo' : mappedCredential.identityID,
                 'Ad' : mappedCredential.name,
                 'Soyad' : mappedCredential.surname,
-                'DogumYili' : date.getFullYear
+                'DogumYili' : splittedDate[2]
             }
 
             const result = await identity(args)
@@ -87,35 +86,5 @@ class CredentialController {
     }
 
 }
-
-const identity = async (args) => {
-
-    const params = {
-        host: 'tckimlik.nvi.gov.tr',
-        path: '/Service/KPSPublic.asmx',
-        wsdl: "/Service/KPSPublic.asmx?WSDL",
-        headers: [{
-            name : "SOAPAction",
-            value : "http://tckimlik.nvi.gov.tr/WS/TCKimlikNoDogrula",
-            }]
-    }
-
-    var client = easy_soap(params, {secure:true})
-
-    const response = await client.call({'method' : 'TCKimlikNoDogrula',
-        attributes: {
-            'xmlns': 'http://tckimlik.nvi.gov.tr/WS'
-        },
-        params : {
-            'TCKimlikNo' : args.TCKimlikNo,
-            'Ad' : args.Ad,
-            'Soyad' : args.Soyad,
-            'DogumYili' : 1997
-        }
-    })
-
-    return response
-}
-
 
 module.exports = CredentialController
