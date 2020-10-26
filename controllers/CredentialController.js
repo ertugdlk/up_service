@@ -3,6 +3,7 @@ const Credential = require('up_core/models/UserCredentials')
 const {encrypt, decrypt} = require('up_core/utils/Cryptoutil')
 const User = require('up_core/models/User')
 const Soap = require('soap')
+const easy_soap = require('easysoap')
 const Config = require('config')
 
 class CredentialController {
@@ -13,33 +14,26 @@ class CredentialController {
             _.chain(req.body)
                 .pick(['user','identityID', 'phone', 'name', 'surname', 'dateOfBirth'])
                 .value()
-
+            
+            
             //Date Format
             const splittedDate = mappedCredential.dateOfBirth.split('-')
             const date = new Date()
             date.setFullYear(splittedDate[2],splittedDate[1]-1,splittedDate[0])
             mappedCredential.dateOfBirth = date
 
-            //TCKN soap req args
             const args={
-            "TCKimlikNo": mappedCredential.identityID,
-            "Ad": req.body.name,
-            "Soyad": req.body.surname,
-            "DogumYili": date.getFullYear(),
+                'TCKimlikNo' : mappedCredential.identityID,
+                'Ad' : mappedCredential.name,
+                'Soyad' : mappedCredential.surname,
+                'DogumYili' : date.getFullYear
             }
-            
-            var response = {}
-            const url= Config.get('TCKN.url')
 
-            Soap.createClient(url, async function(err, client) {
-                await client.TCKimlikNoDogrula(args, function(err, result) {
-                    response = result
-                    });
-            });
+            const result = await identity(args)
 
-            if(response)
+            if(result)
             {
-                if(response.TCKimlikNoDogrulaResult == true){
+                if(res.locals.result.TCKimlikNoDogrulaResult == true){
                     mappedCredential.user = res.locals.userId
                     mappedCredential.identityID = await encrypt(mappedCredential.identityID.toString())
                     const credential = await new Credential(mappedCredential)
@@ -47,10 +41,14 @@ class CredentialController {
 
                     res.send({"status": "success","Credential": credential , "TCKN": response.TCKimlikNoDogrulaResult})
                 }
-                else(response.TCKimlikNoDogrulaResult == false)
+                else
                 {
                     res.send({"status": "failed", "msg": "TCKN and Credential information not match "})
                 }
+            }
+            else
+            {
+                res.send({msg:'no response'})
             }
         }
         catch(error)
@@ -87,6 +85,37 @@ class CredentialController {
             throw error
         }
     }
+
 }
+
+const identity = async (args) => {
+
+    const params = {
+        host: 'tckimlik.nvi.gov.tr',
+        path: '/Service/KPSPublic.asmx',
+        wsdl: "/Service/KPSPublic.asmx?WSDL",
+        headers: [{
+            name : "SOAPAction",
+            value : "http://tckimlik.nvi.gov.tr/WS/TCKimlikNoDogrula",
+            }]
+    }
+
+    var client = easy_soap(params, {secure:true})
+
+    const response = await client.call({'method' : 'TCKimlikNoDogrula',
+        attributes: {
+            'xmlns': 'http://tckimlik.nvi.gov.tr/WS'
+        },
+        params : {
+            'TCKimlikNo' : args.TCKimlikNo,
+            'Ad' : args.Ad,
+            'Soyad' : args.Soyad,
+            'DogumYili' : 1997
+        }
+    })
+
+    return response
+}
+
 
 module.exports = CredentialController
