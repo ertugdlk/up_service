@@ -23,16 +23,16 @@ class CredentialController {
             //TCKN soap req args
             const args={
             "TCKimlikNo": mappedCredential.identityID,
-            "Ad": mappedCredential.name,
-            "Soyad": mappedCredential.surname,
+            "Ad": req.body.name,
+            "Soyad": req.body.surname,
             "DogumYili": date.getFullYear(),
             }
             
             var response = {}
             const url= Config.get('TCKN.url')
 
-            Soap.createClient(url, function(err, client) {
-                client.TCKimlikNoDogrula(args, function(err, result) {
+            Soap.createClient(url, async function(err, client) {
+                await client.TCKimlikNoDogrula(args, function(err, result) {
                     response = result
                     });
             });
