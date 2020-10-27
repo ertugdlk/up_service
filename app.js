@@ -4,6 +4,7 @@ const Config     = require('config')
 const Cors = require('cors')
 const Mongoose = require('mongoose')
 const Helmet = require('helmet')
+const passport = require('up_core/passport/setup')
 
 //DATABASE
 Mongoose.set('useFindAndModify', false) // FindAndModify method is deprecated. If this line is not exists, then it throws error.
@@ -21,6 +22,7 @@ Mongoose.connection.on("error", function(err) {
 
 const App = Express()
 
+App.use(passport.initialize())
 App.use(Helmet())
 App.use(BodyParser.json())
 App.use(BodyParser.urlencoded({ extended: true }))
@@ -37,5 +39,18 @@ Endpoints:" Create Credential: POST /credential/create"
 //Routes
 App.use('/auth' , require('./routes/AuthenticationRoute'))
 App.use('/credential', require('./routes/CredentialRoute'))
+
+
+App.get('/steam/auth',
+  passport.authenticate('steam', { failureRedirect: '/' }),
+  function(req, res) {
+    res.redirect('/');
+  });
+
+App.get('/steam/return',
+  passport.authenticate('steam', { failureRedirect: '/' }),
+  function(req, res) {
+    res.redirect('/');
+  });
 
 
