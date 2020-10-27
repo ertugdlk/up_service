@@ -21,6 +21,7 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.20",
     "mongoose": "^5.10.9",
+    "passport": "^0.4.1",
     "soap": "^0.33.0",
     "up_core": "git+https://unknownpros@bitbucket.org/unknownpros/up_core.git"
   }
