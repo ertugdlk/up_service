@@ -54,6 +54,7 @@ class AuthController {
             throw error
         }
     }
+    
 }
 
 module.exports = AuthController

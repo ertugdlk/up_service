@@ -39,7 +39,7 @@ Endpoints:" Create Credential: POST /credential/create"
 //Routes
 App.use('/auth' , require('./routes/AuthenticationRoute'))
 App.use('/credential', require('./routes/CredentialRoute'))
-
+App.use('/steam', require('./routes/SteamRoute'))
 
 App.get('/steam/auth',
   passport.authenticate('steam', { failureRedirect: '/' }),
