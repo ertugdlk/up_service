@@ -9,14 +9,21 @@ class SteamController {
     {
         try
         {
-            const split = req.query["openid.claimed_id"].split('/')
-            const steamID = split[split.length - 1]
+            if(!req.query["openid.claimed_id"])
+            {
+                res.send("failed")
+            }
+            else
+            {
+                const split = req.query["openid.claimed_id"].split('/')
+                const steamID = split[split.length - 1]
+    
+                const SteamDetail = await SteamUserDetail.find(steamID)
+                const clearedDetail = SteamDetail.toDetail()
+                const userDetail = new Detail(clearedDetail)
+                await userDetail.save()
 
-            const SteamDetail = await SteamUserDetail.find(steamID)
-            const clearedDetail = SteamDetail.toDetail()
-            const userDetail = new Detail(clearedDetail)
-            await userDetail.save()
-            
+            }
         }
         catch(error)
         {
@@ -28,7 +35,7 @@ class SteamController {
     {
         try
         {
-
+            
         }
         catch(error)
         {
