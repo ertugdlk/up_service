@@ -39,7 +39,6 @@ Endpoints:" Create Credential: POST /credential/create"
 const Authentication = require('./middlewares/AuthenticationValidation')
 
 //Routes
-App.use('/seed', require('./routes/SeedRoute'))
 App.use('/auth' , require('./routes/AuthenticationRoute'))
 App.use('/credential', require('./routes/CredentialRoute'))
 App.use('/steam', require('./routes/SteamRoute'))
