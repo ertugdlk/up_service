@@ -38,16 +38,16 @@ class CredentialController {
                     const credential = await new Credential(mappedCredential)
                     await credential.save()
 
-                    res.send({"status": "success","Credential": credential , "TCKN": response.TCKimlikNoDogrulaResult})
+                    res.json({"stats": 1, "Credential": credential , "TCKN": response.TCKimlikNoDogrulaResult})
                 }
                 else
                 {
-                    res.send({"status": "failed", "msg": "TCKN and Credential information not match "})
+                    res.json({"status": 0 ,"msg": "TCKN information not match "})
                 }
             }
             else
             {
-                res.send({msg:'no response'})
+                res.json({"status":0, "msg":'No Response from TCKN Service'})
             }
         }
         catch(error)
