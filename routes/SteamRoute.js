@@ -6,4 +6,8 @@ const Authentication = require('../middlewares/AuthenticationValidation')
 router.get('/redirect',
     Controller.createSteamDetail)
 
+router.post('/getgames',
+    Authentication.isJWTVerified,
+        Controller.getSteamGames)
+
 module.exports = router

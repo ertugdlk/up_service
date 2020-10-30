@@ -1,4 +1,6 @@
 const _ = require('lodash')
+var LocalStorage = require('node-localstorage').LocalStorage
+const localStorage = new LocalStorage('./scratch')
 
 const Detail = require('up_core/models/Detail')
 const SteamAPI = require('up_core/models/steam/SteamAPI')
@@ -17,12 +19,9 @@ class SteamController {
             {
                 const split = req.query["openid.claimed_id"].split('/')
                 const steamID = split[split.length - 1]
-    
-                const SteamDetail = await SteamUserDetail.find(steamID)
-                const clearedDetail = SteamDetail.toDetail()
-                const userDetail = new Detail(clearedDetail)
-                await userDetail.save()
+                localStorage.setItem("steam", steamID)
 
+                res.send('success')
             }
         }
         catch(error)
@@ -35,7 +34,20 @@ class SteamController {
     {
         try
         {
+            const steamID = localStorage.getItem("steam")                
+            const response = await SteamUserDetail.find({steamID : steamID})
+            localStorage.removeItem('steam')
+            const SteamDetail = new SteamUserDetail(response)
+
+            const clearedDetail = SteamDetail.toDetail({user : res.locals.userId})
+            const userDetail = new Detail(clearedDetail.__wrapped__)
+            await userDetail.save()
             
+
+            const detail = await SteamUserDetail.matchGames({steamID: steamID, user: res.locals.userId})
+            const SavedDetail = await detail.save()
+            
+            res.send(SavedDetail)
         }
         catch(error)
         {
