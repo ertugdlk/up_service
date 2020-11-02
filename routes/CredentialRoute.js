@@ -1,6 +1,5 @@
 const Controller = require('../controllers/CredentialController')
 const Authentication = require('../middlewares/AuthenticationValidation')
-const Identity = require('../middlewares/IdentityValidation')
 
 const router = require('express').Router()
 
