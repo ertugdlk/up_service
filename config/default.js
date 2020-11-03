@@ -24,7 +24,7 @@ const defaultConfig =
             name:"Steam",
             apiKey: "3F7E7FF7EC5EC88290ECF9ED3C63F642"
         }
-    }
+    },
 }
 
 module.exports = defaultConfig

@@ -1,6 +1,9 @@
 const _ = require('lodash')
-
+const Redis = require('redis')
 const User = require('up_core/models/User')
+
+const RedisClient = Redis.createClient({host: process.env.redis_host , port: process.env.redis_port,
+password: process.env.redis_password})
 
 class AuthController {
     static async createUser(req,res,next) 
@@ -44,17 +47,40 @@ class AuthController {
             {
                 throw new error ({error: 'Invalid Login Credentials'})
             }
-            
-            const token = await user.generateAuthToken()
 
-            res.send({user,token:token})
+            const token = await user.generateAuthToken()
+            req.session.data = token
+
+            res.send({user,token:token , cookie: req.session.id})
         }
         catch(error)
         {
             throw error
         }
     }
-    
+
+    static async controlSession(req,res,next)
+    {
+        try
+        {
+            const id = req.body.cookie
+
+            RedisClient.GET('sess:'+ id, (err,result) => {
+                if(err)
+                {
+                    res.send(err)
+                }
+                else
+                {
+                    res.send(result)
+                }
+            })
+        }
+        catch(error)
+        {
+            throw error
+        }
+    }
 }
 
 module.exports = AuthController

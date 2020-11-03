@@ -5,6 +5,11 @@ const Cors = require('cors')
 const Mongoose = require('mongoose')
 const Helmet = require('helmet')
 const passport = require('up_core/passport/setup')
+const session = require('express-session');
+const Redis = require('redis');
+const RedisClient = Redis.createClient({host: process.env.redis_host , port: process.env.redis_port,
+  password: process.env.redis_password})
+const RedisStore = require('connect-redis')(session);
 
 //DATABASE
 Mongoose.set('useFindAndModify', false) // FindAndModify method is deprecated. If this line is not exists, then it throws error.
@@ -20,7 +25,22 @@ Mongoose.connection.on("error", function(err) {
     return console.log(err);
 });
 
+
 const App = Express()
+
+RedisClient.on('error', (err) => {
+  console.log('Redis error: ', err)
+})
+
+
+App.use(session({
+  secret:process.env.session_key,
+  resave:false,
+  saveUninitialized: true,
+  store: new RedisStore({client: RedisClient }),
+  cookie: { secure: false, maxAge: 86400 },
+}))
+
 
 App.use(passport.initialize())
 App.use(Helmet())
