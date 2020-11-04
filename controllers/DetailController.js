@@ -6,10 +6,11 @@ class DetailController {
   static async getUserGames(req, res, next) {
 
     try {
-      const details = await Detail.find({ user: "5f96872bf30677640e4ab2cb" })
+      const Details = await Detail.find({ user: "5f96872bf30677640e4ab2cb" })
+      const Games = _.map(Details, 'games')
+      const AllGames = _.flattenDeep(Games)
       
-
-      res.send(details)
+      res.send(AllGames)
 
     }
     catch (error) {
