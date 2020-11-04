@@ -38,7 +38,7 @@ class CredentialController {
                     const credential = await new Credential(mappedCredential)
                     await credential.save()
 
-                    res.json({"stats": 1, "Credential": credential , "TCKN": response.TCKimlikNoDogrulaResult})
+                    res.json({"status": 1, "Credential": credential , "TCKN": response.TCKimlikNoDogrulaResult})
                 }
                 else
                 {
