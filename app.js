@@ -5,7 +5,7 @@ const Cors = require('cors')
 const Mongoose = require('mongoose')
 const Helmet = require('helmet')
 const passport = require('up_core/passport/setup')
-const session = require('express-session');
+const Cookie = require('cookie-parser')
 
 //DATABASE
 Mongoose.set('useFindAndModify', false) // FindAndModify method is deprecated. If this line is not exists, then it throws error.
@@ -28,6 +28,7 @@ App.use(Helmet())
 App.use(BodyParser.json())
 App.use(BodyParser.urlencoded({ extended: true }))
 App.use(Cors())
+App.use(Cookie())
 
 
 //Service
