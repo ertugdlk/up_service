@@ -6,6 +6,8 @@ const Mongoose = require('mongoose')
 const Helmet = require('helmet')
 const passport = require('up_core/passport/setup')
 const Cookie = require('cookie-parser')
+const Websockets = require('up_core/utils/Websockets')
+const Http = require('http')
 
 //DATABASE
 Mongoose.set('useFindAndModify', false) // FindAndModify method is deprecated. If this line is not exists, then it throws error.
@@ -27,12 +29,19 @@ App.use(passport.initialize())
 App.use(Helmet())
 App.use(BodyParser.json())
 App.use(BodyParser.urlencoded({ extended: true }))
-App.use(Cors())
+App.use(Cors({
+  origin: 'http://localhost:3000/'
+}))
 App.use(Cookie())
+
+const server = Http.createServer(App);
+const SocketIO = require('socket.io')(server)
+global.io = SocketIO;
+global.io.on('connection', Websockets.connection)
 
 
 //Service
-App.listen(process.env.PORT || 5000)
+server.listen(process.env.PORT || 5000)
 
 App.get('/', (req, res) => res.json({
   msg: 'Hello, welcome to unkownpros API service',
