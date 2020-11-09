@@ -37,7 +37,7 @@ class AuthController {
 
             if(!user)
             {
-                    throw new error ({error: 'Invalid Login Credentials'})
+                res.send({err:"user not found"})
             }
 
             if(!user.findByCredentials(mappedCredentials.password))
