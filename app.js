@@ -29,7 +29,7 @@ App.use(passport.initialize())
 App.use(Helmet())
 App.use(BodyParser.json())
 App.use(BodyParser.urlencoded({ extended: true }))
-App.use(Cors({origin: '*'}))
+App.use(Cors({origin: 'http://localhost:3000', credentials: true }))
 App.use(Cookie())
 
 const server = Http.createServer(App);

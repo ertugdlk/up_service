@@ -17,6 +17,7 @@ class AuthenticationValidation
             if(user)
             {
                 res.locals.userId = user._id
+                res.locals.user = user
 
                 next()
             }
