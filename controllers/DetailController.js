@@ -20,6 +20,28 @@ class DetailController {
     }
   }
 
+  static async setIgn(req, res, next) {
+    try {
+
+      const mappedInfo =
+        _.chain(req.body)
+          .pick(['ign' , 'appId'])
+          .value()
+
+      const updatedDetail = await Detail.findOneAndUpdate({ user: res.locals.userId, 'games.id': mappedInfo.appId } ,
+        { 'games.$.ign' : mappedInfo.ign})
+
+      if(!updatedDetail)
+      {
+        res.send({'status': 0 , 'msg': 'error'})
+      }
+
+      res.send({'status': 1, 'msg': 'success'})  
+    }
+    catch (error) {
+      throw error
+    }
+  }
 }
 
 module.exports = DetailController

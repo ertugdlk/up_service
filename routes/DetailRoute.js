@@ -6,6 +6,10 @@ const Authentication = require("../middlewares/AuthenticationValidation")
 router.get('/games',
     Controller.getUserGames)
 
+router.post('/setign',
+    Authentication.isJWTVerified,
+        Controller.setIgn)
+
 module.exports = router
 
 
