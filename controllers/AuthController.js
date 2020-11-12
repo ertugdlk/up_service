@@ -10,14 +10,25 @@ class AuthController {
                     .pick(['nickname', 'email', 'password'])
                     .value()
 
+            const nicknameCheck = await User.findOne({ nickname: mappedUser.nickname })
+            const emailCheck = await User.findOne({email = mappedUser.email})
+
+            if(nicknameCheck)
+            {
+                return res.status(203).send({status: 0 , msg: 'Exist User Nickname'})
+            }
+            else if(emailCheck)
+            {
+                return res.status(203).send({status: 0 , msg: 'Exist User Email'})
+            }
+
             const user = await new User(mappedUser)
             await user.save()
 
             return res.send(user)
         }
         catch (error) {
-            res.status(400).send(error)
-            next(error)
+            throw error
         }
     }
 
@@ -32,7 +43,7 @@ class AuthController {
 
             if(!user)
             {
-                res.send({err:"user not found"})
+                return res.send({err:"user not found"})
             }
 
             if (!user.findByCredentials(mappedCredentials.password)) {
