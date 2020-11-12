@@ -11,7 +11,7 @@ class AuthController {
                     .value()
 
             const nicknameCheck = await User.findOne({ nickname: mappedUser.nickname })
-            const emailCheck = await User.findOne({email = mappedUser.email})
+            const emailCheck = await User.findOne({email : mappedUser.email})
 
             if(nicknameCheck)
             {
