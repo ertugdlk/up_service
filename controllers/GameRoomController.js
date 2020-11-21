@@ -1,5 +1,5 @@
 const _ = require('lodash')
-const {getRoom} = require('up_core/utils/Redisutil')
+const {getRoom , getRooms} = require('up_core/utils/Redisutil')
 
 class GameRoomController
 {
@@ -10,7 +10,18 @@ class GameRoomController
             {
                 res.send(err)
             }
-            
+            res.send(data)
+        })
+
+    }
+
+    static async getRoomsData(req,res,next)
+    {
+        getRooms((err,data) => {
+            if(err)
+            {
+                res.send(err)
+            }
             res.send(data)
         })
 

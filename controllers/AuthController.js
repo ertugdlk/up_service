@@ -52,7 +52,7 @@ class AuthController {
 
             const token = await user.generateAuthToken()
             res.cookie('token', token, { httpOnly: true });
-            res.send('Success')
+            res.send('success')
         }
         catch (error) {
             throw error
