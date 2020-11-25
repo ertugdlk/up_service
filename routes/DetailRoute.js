@@ -8,7 +8,11 @@ router.get('/games',
 
 router.post('/setign',
     Authentication.isJWTVerified,
-        Controller.setIgn)
+    Controller.setIgn)
+
+router.get('/allgames',
+    Controller.getAllIntegratedGames
+)
 
 module.exports = router
 
