@@ -64,7 +64,7 @@ App.get('/steam/auth',
 App.get('/steam/return',
   passport.authenticate('steam', { failureRedirect: '/' }),
   function (req, res) {
-    res.redirect('/');
+    res.redirect('localhost:3000/dashboard');
   });
 
 

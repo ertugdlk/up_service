@@ -5,7 +5,10 @@ const SteamMiddleware = require('../middlewares/SteamMiddleware')
 
 //Routes
 router.get('/redirect',
-    Controller.getSteamID)
+    Authentication.isJWTVerified,
+        Controller.getSteamID,
+            SteamMiddleware.VACbanControl,
+                Controller.getSteamGames)
 
 router.post('/getgames',
     Authentication.isJWTVerified,

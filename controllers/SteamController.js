@@ -19,14 +19,13 @@ class SteamController {
             {
                 const split = req.query["openid.claimed_id"].split('/')
                 const steamID = split[split.length - 1]
-                localStorage.setItem("steam", steamID)
-
-                res.status(200).json({msg: success})
+                res.locals.steamId = steamID
+                next()
             }
         }
         catch(error)
         {
-            res.status(500).json({msg: failed})
+            res.status(500).json({msg: 'failed'})
             throw error
         }
     }
@@ -34,20 +33,19 @@ class SteamController {
     static async getSteamGames(req,res,next)
     {
         try
-        {
-            const steamID = localStorage.getItem("steam")                
+        {             
+            const steamID = res.locals.steamId
             const response = await SteamUserDetail.find({steamID : steamID})
-            localStorage.removeItem('steam')
             const SteamDetail = new SteamUserDetail(response)
 
             const clearedDetail = SteamDetail.toDetail({user : res.locals.userId})
             const userDetail = new Detail(clearedDetail.__wrapped__)
-            await userDetail.save()
             
-            const detail = await SteamUserDetail.matchGames({steamID: steamID, user: res.locals.userId})
-            const SavedDetail = await detail.save()
+            //error over here
+            const detail = await SteamUserDetail.matchGames({steamID: steamID, user: res.locals.userId , detail: userDetail})
+            await detail.save()
             
-            res.status(200).json({"msg": "Saved Steam Detail", "data": SavedDetail })
+            res.redirect('http://localhost:3000/dashboard')
         }
         catch(error)
         {

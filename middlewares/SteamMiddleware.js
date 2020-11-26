@@ -5,11 +5,10 @@ const localStorage = new LocalStorage('./scratch')
 
 class SteamMiddleware 
 {
-    static async VACbanControl()
+    static async VACbanControl(req,res,next)
     {
         try{
-            const steamID = localStorage.getItem('steam')
-            const response = await SteamAPI.controlVac({steamID})
+            const response = await SteamAPI.controlVac({steamID: res.locals.steamId})
 
             if(response.VACBanned == true)
             {
