@@ -12,6 +12,12 @@ class AuthenticationValidation
             const jwtOptions = Config.get('jwt')
             const accessToken = JWTutil.getAccessToken(req)
 
+            //yukarıdaki getaccesstoken a aktar bunu
+            if(!accessToken){
+                res.send(Boom.unauthorized('Access token is invalid'))
+                res.end()
+            }
+
             const user = await JWTutil.verify(accessToken, jwtOptions)
 
             if(user)
@@ -25,6 +31,7 @@ class AuthenticationValidation
             {
                 Boom.unauthorized('Access token is invalid')
             }
+
         }
         catch(error)
         {

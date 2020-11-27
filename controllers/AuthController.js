@@ -51,7 +51,7 @@ class AuthController {
             }
 
             const token = await user.generateAuthToken()
-            res.cookie('token', token, { httpOnly: true });
+            res.cookie('token', token, { httpOnly: true , maxAge: 3600});
             res.send('success')
         }
         catch (error) {
@@ -59,7 +59,16 @@ class AuthController {
         }
     }
 
-    static async getUserInfo(req, res, nrext) {
+    static async logoutUser(req,res,next) {
+        try{
+            res.cookie('token', ' ', { maxAge: -1})
+        }
+        catch(error){
+            throw error
+        }
+    }
+
+    static async getUserInfo(req, res, next) {
         try {
             res.send(res.locals.user)
         }
