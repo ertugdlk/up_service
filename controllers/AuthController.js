@@ -61,7 +61,8 @@ class AuthController {
 
     static async logoutUser(req,res,next) {
         try{
-            res.cookie('token', ' ', { maxAge: -1})
+            res.cookie('token', '', { maxAge: 0})
+            res.end()
         }
         catch(error){
             throw error
