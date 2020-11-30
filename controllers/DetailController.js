@@ -9,8 +9,12 @@ class DetailController {
       const Details = await Detail.find({ user: res.locals.userId })
       const Games = _.map(Details, 'games')
       const AllGames = _.flattenDeep(Games)
+      var newArray = []
+      _.forEach(AllGames, function(doc){
+        newArray.push(doc.id)
+      })
       const result = await Game.find({
-        '_id': { $in: AllGames }
+        '_id': { $in: newArray }
       })
 
       res.send(result)
