@@ -21,6 +21,7 @@ class SteamController {
                 const steamID = split[split.length - 1]
                 res.locals.steamId = steamID
                 next()
+                
             }
         }
         catch(error)
