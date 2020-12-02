@@ -16,6 +16,10 @@ router.get('/allgames',
         Controller.getAllIntegratedGames
 )
 
+router.get('/info',
+    Authentication.isJWTVerified,
+        Controller.getUserDetail)
+
 module.exports = router
 
 
