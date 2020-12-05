@@ -21,6 +21,7 @@ class SteamController {
                 const steamID = split[split.length - 1]
                 res.locals.steamId = steamID
                 next()
+                
             }
         }
         catch(error)
@@ -45,7 +46,7 @@ class SteamController {
             const detail = await SteamUserDetail.matchGames({steamID: steamID, user: res.locals.userId , detail: userDetail})
             await detail.save()
             
-            res.redirect('http://localhost:3000/dashboard/:' + detail.name)
+            res.redirect('http://localhost:3000/dashboard/' + detail.name)
         }
         catch(error)
         {
