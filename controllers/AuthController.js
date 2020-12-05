@@ -35,6 +35,7 @@ class AuthController {
         try {
             if (req.body.email) {
                 const otp = await sendOtp(req.body.email)
+                res.send({ "msg": "OTP sent", "status": "1" })
             } else {
                 res.send({ "msg": "Enter an email", "status": "0" })
                 res.end()
@@ -48,11 +49,12 @@ class AuthController {
         try {
             verifyOtp(req.body.email, req.body.otp, async (err, data) => {
                 const result = data.status
+                const email = req.body.email
                 if (result != 1) {
                     res.send({ "msg": "Wrong or old OTP", "status": "0" })
                 } else {
                     const update = { emailVerified: true };
-                    const user = await User.findOneAndUpdate({ emai: email }, update)
+                    const user = await User.findOneAndUpdate({ email: email }, update)
                     res.send({ status: 1, msg: 'Verified OTP' })
                     res.end()
                 }
