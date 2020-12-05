@@ -2,7 +2,7 @@ const _ = require('lodash')
 const Redis = require('redis')
 const User = require('up_core/models/User')
 import { response } from 'express'
-import { findOne } from 'up_core/models/User'
+import { findOne, findOneAndUpdate } from 'up_core/models/User'
 import { sendOtp, verifyOtp } from 'up_core/utils/emailVerification'
 
 class AuthController {
@@ -45,16 +45,16 @@ class AuthController {
         }
     }
 
-    static async verifyOTP(email, otp) {
+    static async verifyOTP(req, res, next) {
         try {
-            verifyOtp(email, otp, (err, data) => {
+            verifyOtp(req.body.email, req.body.otp, (err, data) => {
                 const result = data.status
                 if (result != 1) {
-                    return ({ "msg": "Wrong or old OTP", "status": "0" })
+                    res.send({ "msg": "Wrong or old OTP", "status": "0" })
                 } else {
                     const update = { emailVerified: true };
-                    const user = await findOneAndUpdate({ emai: email }, update)
-                    return response(true)
+                    const user = await User.findOneAndUpdate({ emai: email }, update)
+                    res.send({ status: 1, msg: 'Verified OTP' })
                 }
             })
 
