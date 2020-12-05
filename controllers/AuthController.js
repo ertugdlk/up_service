@@ -35,6 +35,8 @@ class AuthController {
         try {
             if (req.body.email) {
                 const otp = await sendOtp(req.body.email)
+                res.send({msg: "success"})
+                res.end()
             } else {
                 res.send({ "msg": "Enter an email", "status": "0" })
                 res.end()
