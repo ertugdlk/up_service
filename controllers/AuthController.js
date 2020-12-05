@@ -96,6 +96,7 @@ class AuthController {
         try {
             res.cookie('token', '', { maxAge: 0 })
             res.end()
+            
         }
         catch (error) {
             throw error
