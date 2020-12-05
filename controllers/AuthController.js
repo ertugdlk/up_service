@@ -52,8 +52,8 @@ class AuthController {
                 if (result != 1) {
                     return ({ "msg": "Wrong or old OTP", "status": "0" })
                 } else {
-                    const user = await findOneAndUpdate({ emai: email })
-                    user.emailVerified = true
+                    const update = { emailVerified: true };
+                    const user = await findOneAndUpdate({ emai: email }, update)
                     return response(true)
                 }
             })
