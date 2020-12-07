@@ -28,9 +28,9 @@ const defaultConfig =
     },
     "rcon":
     {
-        host:"213.243.44.6",
-        port:27015,
-        password:"jazz3dtr",
+        "host":"213.243.44.6",
+        "port":27015,
+        "password":"jazz3dtr",
     }
 }
 
