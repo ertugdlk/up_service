@@ -27,6 +27,10 @@ class DetailController {
   static async getUserDetail(req,res,next) {
     try{
       const detail = await Detail.findOne({user: res.locals.userId})
+      if(!detail){
+        res.send('')
+        next()
+      }
       res.send(detail.name)
     }
     catch(error){
