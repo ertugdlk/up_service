@@ -14,7 +14,6 @@ class CredentialController {
                 .pick(['user','identityID', 'phone', 'name', 'surname', 'dateOfBirth'])
                 .value()
             
-            
             //Date Format
             const splittedDate = mappedCredential.dateOfBirth.split('-')
             const date = new Date()
