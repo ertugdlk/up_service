@@ -12,7 +12,6 @@ class GameRoomController {
         })
 
     }
-
     static async getRoomsData(req, res, next) {
         try {
             const allData = await GameRoomInfo.find()
