@@ -54,6 +54,7 @@ App.use('/credential', require('./routes/CredentialRoute'))
 App.use('/steam', require('./routes/SteamRoute'))
 App.use('/detail', require('./routes/DetailRoute'))
 App.use('/room' ,require('./routes/GameRoomRoute'))
+App.use('/rcon' , require('./routes/RconRoute'))
 
 App.get('/steam/auth',
   passport.authenticate('steam', { failureRedirect: '/' }),
