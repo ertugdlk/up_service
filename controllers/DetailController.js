@@ -27,11 +27,13 @@ class DetailController {
   static async getUserDetail(req,res,next) {
     try{
       const detail = await Detail.findOne({user: res.locals.userId})
-      if(!detail){
+      if(detail === null){
         res.send('')
-        next()
+        res.end()
       }
-      res.send(detail.name)
+      else{
+        res.send(detail.name)
+      }
     }
     catch(error){
       throw error
