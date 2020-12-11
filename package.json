@@ -29,6 +29,6 @@
     "passport": "^0.4.1",
     "redis": "^3.0.2",
     "socket.io": "^3.0.0",
-    "up_core": "git+https://unknownpro:${BITBUCKET_PASS}@bitbucket.org/unknownpros/up_core.git"
+    "up_core": "git+https://unknownpro@bitbucket.org/unknownpros/up_core.git"
   }
 }
