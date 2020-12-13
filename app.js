@@ -22,6 +22,18 @@ Mongoose.connection.on("error", function (err) {
   return console.log(err);
 });
 
+//CORS Settings
+const whitelist = ['http://localhost:3000', '213.243.44.6:27015']
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  },
+  credentials: true
+}
 
 const App = Express()
 
@@ -29,7 +41,7 @@ App.use(passport.initialize())
 App.use(Helmet())
 App.use(BodyParser.json())
 App.use(BodyParser.urlencoded({ extended: true }))
-App.use(Cors({origin: 'http://localhost:3000', credentials: true }))
+App.use(Cors(corsOptions))
 App.use(Cookie())
 
 const server = Http.createServer(App);
