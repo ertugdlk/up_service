@@ -6,7 +6,7 @@ const router = require('express').Router()
 router.get('/getone', controller.getRoomData)
 router.get('/getall',
     Authentication.isJWTVerified,
-    controller.getRoomsData)
+        controller.getRoomsData)
 router.post('/getdata', controller.getGameRoom)
 
 module.exports = router
