@@ -16,7 +16,7 @@ class RconController{
     static async loadMatchSettings(req,res,next){
         try
         {
-            const result = matchSettings(req.params.roomId, req.params.teams, req.params.map)
+            const result = await matchSettings(req.query.roomId, req.query.teams, req.query.map)
             res.send(result)
         }
         catch(error)
