@@ -1,5 +1,5 @@
 const _ = require('lodash')
-const {gameStatus, matchSettings} = require('up_core/utils/RCONutil')
+const {gameStatus, matchSettings, setupMatch} = require('up_core/utils/RCONutil')
 
 class RconController{
     static async status(req,res,next){
@@ -16,7 +16,7 @@ class RconController{
     static async loadMatchSettings(req,res,next){
         try
         {
-            const result = matchSettings(req.params.roomId, req.params.teams, req.body.map)
+            const result = matchSettings(req.params.roomId, req.params.teams, req.params.map)
             res.send(result)
         }
         catch(error)
@@ -24,6 +24,18 @@ class RconController{
             throw error
         }
     }
+
+    static async setupMatchSettings(req,res,next){
+        try{
+            const response = setupMatch(req.body.roomId , req.body.teams , req.body.map)
+            res.send(response)
+        }
+        catch(error){
+            throw error
+        }
+    }
+
+    
 }
 
 module.exports = RconController  
