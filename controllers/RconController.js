@@ -25,7 +25,7 @@ class RconController{
         }
     }
 
-    static async setupMatchSettings(res,res,next){
+    static async setupMatchSettings(req,res,next){
         try{
             const response = setupMatch(req.body.roomId , req.body.teams , req.body.map)
             res.send(response)

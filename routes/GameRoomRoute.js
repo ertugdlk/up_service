@@ -7,6 +7,8 @@ router.get('/getone', controller.getRoomData)
 router.get('/getall',
     Authentication.isJWTVerified,
     controller.getRoomsData)
-router.post('/getdata', controller.getGameRoom)
+router.post('/getdata', 
+    Authentication.isJWTVerified,
+        controller.getGameRoom)
 
 module.exports = router
