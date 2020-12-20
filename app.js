@@ -41,7 +41,14 @@ App.use(passport.initialize())
 App.use(Helmet())
 App.use(BodyParser.json())
 App.use(BodyParser.urlencoded({ extended: true }))
-App.use(Cors(corsOptions))
+App.use(Cors())
+App.use(function(req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
+});
 App.use(Cookie())
 
 const server = Http.createServer(App);
