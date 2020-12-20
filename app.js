@@ -23,7 +23,7 @@ Mongoose.connection.on("error", function (err) {
 });
 
 //CORS Settings
-const whitelist = ['http://localhost:3000', '213.243.44.6:27015', 'https://ertug-2.d4u99xidnqjcw.amplifyapp.com']
+const whitelist = ['https://ertug-2.d4u99xidnqjcw.amplifyapp.com','http://localhost:3000', '213.243.44.6:27015', 'https://ertug-2.d4u99xidnqjcw.amplifyapp.com/']
 const corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
