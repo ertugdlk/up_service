@@ -41,7 +41,7 @@ App.use(passport.initialize())
 App.use(Helmet())
 App.use(BodyParser.json())
 App.use(BodyParser.urlencoded({ extended: true }))
-App.use(Cors({credentials:true}))
+App.use(Cors(corsOptions))
 App.use(Cookie())
 
 const server = Http.createServer(App);
