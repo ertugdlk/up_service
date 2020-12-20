@@ -6,7 +6,7 @@ const defaultConfig =
     },
     "jwt":
 	{
-		"secret": process.env.JWT_SECRET,
+		"secret": 'Rst.!bJTQEdf79',
         "expiresIn": "7 days",
         "is": 
         {
