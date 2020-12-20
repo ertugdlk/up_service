@@ -84,7 +84,7 @@ class AuthController {
             }
 
             const token = await user.generateAuthToken()
-            res.cookie('token', token, { httpOnly: true, maxAge: 7 * 24 * 6 * 604800 });
+            res.cookie('token', token, { httpOnly: true, sameSite: false ,maxAge: 7 * 24 * 6 * 604800 });
             res.send('success')
         }
         catch (error) {
