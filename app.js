@@ -23,7 +23,7 @@ Mongoose.connection.on("error", function (err) {
 });
 
 //CORS Settings
-const whitelist = ['http://localhost:3000/', '213.243.44.6:27015']
+const whitelist = ['http://localhost:3000', '213.243.44.6:27015']
 const corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
