@@ -80,6 +80,7 @@ class AuthController {
             }
 
             if (!user.findByCredentials(mappedCredentials.password)) {
+                res.end()
                 throw new error({ error: 'Invalid Login Credentials' })
             }
 
@@ -95,7 +96,7 @@ class AuthController {
 
     static async logoutUser(req, res, next) {
         try {
-            res.cookie('token', '', { maxAge: 0 })
+            res.clearCookie('token')
             res.end()
             
         }
