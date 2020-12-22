@@ -31,6 +31,6 @@
     "passport": "^0.4.1",
     "redis": "^3.0.2",
     "socket.io": "^3.0.0",
-    "up_core": "git+https://unknownpros@bitbucket.org/unknownpros/up_core.git"
+    "up_core": "git+https://unknownpros:cik!bold1DOOD8spoh@bitbucket.org/unknownpros/up_core.git"
   }
 }
