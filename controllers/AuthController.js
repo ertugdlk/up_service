@@ -89,23 +89,25 @@ class AuthController {
             if (!user) {
                 return res.send({ err: "user not found" })
             }
-
-            if (!user.findByCredentials(mappedCredentials.password)) {
-                throw new error({ error: 'Invalid Login Credentials' })
+            const passwordTrueFalse = await user.findByCredentials(mappedCredentials.password)
+            if (passwordTrueFalse === false) {
+                res.status(204).send('failed')
+                res.end()
             }
-
-            const token = await user.generateAuthToken()
-            res.cookie('token', token, { httpOnly: true, maxAge: 7 * 24 * 6 * 604800 });
-            res.send('success')
+            else{
+                const token = await user.generateAuthToken()
+                res.cookie('token', token, { httpOnly: true, secure: true , sameSite:'None' , maxAge: 7 * 24 * 6 * 604800 });       
+                res.send('success')
+            }
         }
         catch (error) {
-            throw error
+                throw error
         }
     }
 
     static async logoutUser(req, res, next) {
         try {
-            res.cookie('token', '', { maxAge: 0 })
+            res.clearCookie('token')
             res.end()
 
         }

@@ -23,13 +23,13 @@ Mongoose.connection.on("error", function (err) {
 });
 
 //CORS Settings
-const whitelist = ['http://localhost:3000/', '213.243.44.6:27015']
+const whitelist = ['https://ertug-2.d4u99xidnqjcw.amplifyapp.com','http://localhost:3000']
 const corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
       callback(null, true)
     } else {
-      callback(new Error('Not allowed by CORS'))
+      callback(null,false)
     }
   },
   credentials: true
@@ -42,6 +42,22 @@ App.use(Helmet())
 App.use(BodyParser.json())
 App.use(BodyParser.urlencoded({ extended: true }))
 App.use(Cors(corsOptions))
+
+/*
+App.use(function(req, res, next) {
+  const allowedOrigins = ['http://127.0.0.1:8020', 'http://localhost:8020', 'http://127.0.0.1:9000', 'http://localhost:9000'];
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+       res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  res.setHeader("Access-Control-Allow-Origin", req.headers.origin);
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
+});
+*/
+
 App.use(Cookie())
 
 const server = Http.createServer(App);
@@ -66,6 +82,7 @@ App.use('/credential', require('./routes/CredentialRoute'))
 App.use('/steam', require('./routes/SteamRoute'))
 App.use('/detail', require('./routes/DetailRoute'))
 App.use('/room' ,require('./routes/GameRoomRoute'))
+
 App.use('/rcon' , require('./routes/RconRoute'))
 
 App.get('/steam/auth',
@@ -79,5 +96,3 @@ App.get('/steam/return',
   function (req, res) {
     res.redirect('localhost:3000/dashboard');
   });
-
-

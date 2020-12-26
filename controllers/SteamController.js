@@ -46,7 +46,7 @@ class SteamController {
             const detail = await SteamUserDetail.matchGames({steamID: steamID, user: res.locals.userId , detail: userDetail})
             await detail.save()
             
-            res.redirect('http://localhost:3000/dashboard/' + detail.name)
+            res.redirect('https://ertug-2.d4u99xidnqjcw.amplifyapp.com/dashboard/' + detail.name)
         }
         catch(error)
         {
