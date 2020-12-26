@@ -1,7 +1,7 @@
 const _ = require('lodash')
 const Redis = require('redis')
 const User = require('up_core/models/User')
-const { sendOtp, verifyOtp } = require('up_core/utils/emailVerification')
+const { sendOtp, verifyOtp, ChangeEmail } = require('up_core/utils/emailVerification')
 
 class AuthController {
     static async createUser(req, res, next) {
@@ -66,6 +66,17 @@ class AuthController {
         }
     }
 
+    static async changeEmail(req, res, next) {
+        //req = {email(uniuqe), new email(unique), }
+        try {
+            ChangeEmail()
+
+        } catch (error) {
+            throw error
+
+        }
+    }
+
     static async authenticateUser(req, res, next) {
         try {
             const mappedCredentials =
@@ -96,7 +107,7 @@ class AuthController {
         try {
             res.cookie('token', '', { maxAge: 0 })
             res.end()
-            
+
         }
         catch (error) {
             throw error
