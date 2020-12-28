@@ -1,7 +1,8 @@
 const _ = require('lodash')
 const Redis = require('redis')
 const User = require('up_core/models/User')
-const { sendOtp, verifyOtp } = require('up_core/utils/emailVerification')
+const { sendOtp, verifyOtp, ChangeEmail } = require('up_core/utils/emailVerification')
+const bcrypt = require('bcrypt')
 
 class AuthController {
     static async createUser(req, res, next) {
@@ -66,6 +67,53 @@ class AuthController {
         }
     }
 
+    static async change(req, res, next) {
+        //req = {email(uniuqe), new email(unique), }
+        try {
+            if (req.body.nickname) {
+                const user = await User.findOne({ nickname: req.body.nickname })
+                const oldEmail = user.email
+                const otp = await sendOtp(oldEmail)
+                res.send({ "msg": "OTP sent", "status": "1" })
+            } else {
+                res.send({ status: 0, message: "nickname is NULL" })
+            }
+        } catch (error) {
+            throw error
+        }
+    }
+
+
+    static async update(req, res, next) {
+        try {
+
+            verifyOtp(req.body.email, req.body.otp, async (err, data) => {
+                const result = data.status
+                const email = req.body.email
+                if (result != 1) {
+                    res.send({ "msg": "Wrong or old OTP", "status": "0" })
+                } else {
+                    if (req.body.type == 'email') {
+                        const update = { email: req.body.newemail }
+                        const user = await User.findOneAndUpdate({ email: email }, update)
+                        res.send({ status: 1, msg: 'Email Changed' })
+                        res.end()
+                    } else if (req.body.type == 'password') {
+                        const newpassword = req.body.newpassword
+                        const saltedPw = await bcrypt.hash(newpassword, 8)
+                        const updatedPw = { password: saltedPw }
+                        await User.updateOne({ email: req.body.email }, updatedPw)
+                        res.send({ status: 1, msg: 'Password changed' })
+                        res.end()
+                    }
+                }
+            })
+        } catch (error) {
+            throw error
+        }
+    }
+
+
     static async authenticateUser(req, res, next) {
         try {
             const mappedCredentials =
@@ -82,14 +130,14 @@ class AuthController {
                 res.status(204).send('failed')
                 res.end()
             }
-            else{
+            else {
                 const token = await user.generateAuthToken()
-                res.cookie('token', token, { httpOnly: true, secure: true , sameSite:'None' , maxAge: 7 * 24 * 6 * 604800 });       
+                res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 7 * 24 * 6 * 604800 });
                 res.send('success')
             }
         }
         catch (error) {
-                throw error
+            throw error
         }
     }
 
@@ -97,7 +145,7 @@ class AuthController {
         try {
             res.clearCookie('token')
             res.end()
-            
+
         }
         catch (error) {
             throw error
