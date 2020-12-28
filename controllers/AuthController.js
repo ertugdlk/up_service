@@ -74,7 +74,6 @@ class AuthController {
                     .value()
 
             const user = await User.findOne({ nickname: mappedCredentials.nickname })
-
             if (!user) {
                 return res.send({ err: "user not found" })
             }
