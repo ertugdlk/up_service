@@ -45,6 +45,11 @@ App.use(Helmet())
 App.use(BodyParser.json())
 App.use(BodyParser.urlencoded({ extended: true }))
 App.use(Cors(corsOptions))
+App.use(function (req, res, next) {
+  res.set("credentials", "include")
+  res.set("Access-Control-Allow-Credentials", true)
+  next()
+})
 App.use(Cookie())
 
 const server = Http.createServer(App)
