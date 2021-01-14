@@ -54,9 +54,10 @@ App.use(function (req, res, next) {
 App.use(Cookie())
 
 const options = {
-  key: fs.readFileSync("/etc/pki/nginx/server.crt", "utf8"),
-  cert: fs.readFileSync("/etc/pki/nginx/server.crt", "utf8"),
+  key: fs.readFileSync("../../etc/pki/nginx/server.crt", "utf8"),
+  cert: fs.readFileSync("../../etc/pki/nginx/server.crt", "utf8"),
 }
+
 const server = Https.createServer(options, App)
 const SocketIO = require("socket.io")(server)
 global.io = SocketIO
