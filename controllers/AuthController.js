@@ -130,13 +130,17 @@ class AuthController {
         res.end()
       } else {
         const token = await user.generateAuthToken()
+
+        res.header("credentials", "include")
+        res.header("Access-Control-Allow-Credentials", true)
+
         res.cookie("token", token, {
           httpOnly: true,
           secure: true,
           sameSite: "None",
           maxAge: 7 * 24 * 6 * 604800,
         })
-        res.send("success")
+        res.end()
       }
     } catch (error) {
       throw error
@@ -145,6 +149,9 @@ class AuthController {
 
   static async logoutUser(req, res, next) {
     try {
+      res.header("credentials", "include")
+      res.header("Access-Control-Allow-Credentials", true)
+
       res.cookie("token", "", {
         httpOnly: true,
         secure: true,
@@ -152,6 +159,7 @@ class AuthController {
         maxAge: 1,
       })
       res.clearCookie("token")
+
       res.end()
     } catch (error) {
       throw error

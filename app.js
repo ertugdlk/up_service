@@ -7,7 +7,8 @@ const Helmet = require("helmet")
 const passport = require("up_core/passport/setup")
 const Cookie = require("cookie-parser")
 const Websockets = require("up_core/utils/Websockets")
-const Http = require("http")
+const Https = require("https")
+const fs = require("fs")
 
 //DATABASE
 Mongoose.set("useFindAndModify", false) // FindAndModify method is deprecated. If this line is not exists, then it throws error.
@@ -52,13 +53,17 @@ App.use(function (req, res, next) {
 })
 App.use(Cookie())
 
-const server = Http.createServer(App)
+const options = {
+  key: fs.readFileSync("/etc/pki/nginx/server.crt", "utf8"),
+  cert: fs.readFileSync("/etc/pki/nginx/server.crt", "utf8"),
+}
+const server = Https.createServer(options, App)
 const SocketIO = require("socket.io")(server)
 global.io = SocketIO
 global.io.on("connection", Websockets.connection)
 
 //Service
-server.listen(process.env.PORT)
+server.listen(5000)
 
 App.get("/", (req, res) =>
   res.json({
