@@ -19,7 +19,7 @@ class RconController {
   static async loadMatchSettings(req, res, next) {
     try {
       const serverInformation = await matchSettings(req.query.host)
-      res.send(serverInformation.host)
+      res.send(serverInformation)
     } catch (error) {
       throw error
     }
