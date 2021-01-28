@@ -28,7 +28,7 @@ class RconController {
   static async setupMatchSettings(req, res, next) {
     try {
       const response = await setupMatch(req.body.host)
-      res.send()
+      res.send(response)
     } catch (error) {
       throw error
     }

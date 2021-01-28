@@ -10,7 +10,7 @@ router.get(
 )
 router.post(
   "/setupmatch",
-  AuthValidation.isUPserver,
+  AuthValidation.isJWTVerified,
   controller.setupMatchSettings
 )
 
