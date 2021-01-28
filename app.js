@@ -8,6 +8,7 @@ const passport = require("up_core/passport/setup")
 const Cookie = require("cookie-parser")
 const Websockets = require("up_core/utils/Websockets")
 const Https = require("https")
+const http = require("http")
 const fs = require("fs")
 
 //DATABASE
@@ -58,7 +59,7 @@ const options = {
   cert: fs.readFileSync("../server.crt", "utf8"),
 }
 
-const server = Https.createServer(options, App)
+const server = http.createServer(options, App)
 const SocketIO = require("socket.io")(server)
 global.io = SocketIO
 global.io.on("connection", Websockets.connection)
@@ -66,11 +67,11 @@ global.io.on("connection", Websockets.connection)
 //Service
 server.listen(5000)
 
-App.get("/", (req, res) =>
+App.get("/", (req, res) => {
   res.json({
     msg: "unkownpros API service",
   })
-)
+})
 
 //Routes
 App.use("/auth", require("./routes/AuthenticationRoute"))

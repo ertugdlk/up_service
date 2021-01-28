@@ -1,14 +1,11 @@
-const controller = require('../controllers/GameRoomController')
-const Authentication = require('../middlewares/AuthenticationValidation')
+const controller = require("../controllers/GameRoomController")
+const Authentication = require("../middlewares/AuthenticationValidation")
 
-const router = require('express').Router()
+const router = require("express").Router()
 
-router.get('/getone', controller.getRoomData)
-router.get('/getall',
-    Authentication.isJWTVerified,
-        controller.getRoomsData)
-router.post('/getdata', 
-    Authentication.isJWTVerified,
-        controller.getGameRoom)
+router.get("/getone", controller.getRoomData)
+router.get("/getall", Authentication.isJWTVerified, controller.getRoomsData)
+router.post("/getdata", Authentication.isJWTVerified, controller.getGameRoom)
+router.post("/getmaps", Authentication.isJWTVerified, controller.getGameMaps)
 
 module.exports = router
