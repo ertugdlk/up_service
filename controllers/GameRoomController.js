@@ -5,49 +5,77 @@ const GameRoom = require("up_core/models/GameRoom")
 const Game = require("up_core/models/Game")
 
 class GameRoomController {
-  static async getRoomData(req, res, next) {
-    getRoom(req.body.id, (err, data) => {
-      if (err) {
-        res.send(err)
-      }
-      res.send(data)
-    })
-  }
-
-  static async getRoomsData(req, res, next) {
-    try {
-      const allData = await GameRoomInfo.find()
-      res.send(allData)
-    } catch (error) {
-      throw error
+    static async getRoomData(req, res, next) {
+        getRoom(req.body.id, (err, data) => {
+            if (err) {
+                res.send(err)
+            }
+            res.send(data)
+        })
     }
-  }
 
-  static async getGameRoom(req, res, next) {
-    try {
-      const game_room = await GameRoom.findOne({ host: req.body.host })
-      res.send(game_room)
-    } catch (error) {
-      throw error
-    }
-  }
-
-  static async getGameMaps(req, res, next) {
-    try {
-      const game = await Game.findOne({ name: req.body.gameName })
-      if (!game) {
-        res.send({ msg: "Game not found", status: 0 })
-      } else {
-        if (!game.maps) {
-          res.send({ msg: "There are no maps for this game", status: 0 })
-        } else {
-          res.send({ maps: game.maps })
+    static async getRoomsData(req, res, next) {
+        try {
+            const allData = await GameRoomInfo.find()
+            res.send(allData)
+        } catch (error) {
+            throw error
         }
-      }
-    } catch (error) {
-      throw error
     }
-  }
+
+    static async getWaitingRooms(req, res, next) {
+        try {
+            const waitingrooms = await GameRoom.find({ status: 'waiting' })
+            if (waitingrooms) {
+                res.send(waitingrooms)
+            }
+            else {
+                res.send({ msg: "There are currently no waiting rooms" })
+            }
+        } catch (error) {
+            throw error
+        }
+    }
+
+    static async getPlayingRooms(req, res, next) {
+        try {
+            const ingamerooms = await GameRoom.find({ status: 'playing' })
+            if (ingamerooms) {
+                res.send(ingamerooms)
+            }
+            else {
+                res.send({ msg: 'There are currently no playing rooms' })
+            }
+        } catch (error) {
+            throw error
+        }
+    }
+
+    static async getGameRoom(req, res, next) {
+        try {
+            const game_room = await GameRoom.findOne({ host: req.body.host })
+            res.send(game_room)
+        } catch (error) {
+            throw error
+        }
+    }
+
+    static async getGameMaps(req, res, next) {
+        try {
+            const game = await Game.findOne({ name: req.body.gameName })
+            if (!game) {
+                res.send({ msg: "Game not found", status: 0 })
+            } else {
+                if (!game.maps) {
+                    res.send({ msg: "There are no maps for this game", status: 0 })
+                } else {
+                    res.send({ maps: game.maps })
+                }
+            }
+        } catch (error) {
+            throw error
+        }
+    }
 }
 
 module.exports = GameRoomController
