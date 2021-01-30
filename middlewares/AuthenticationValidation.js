@@ -37,8 +37,9 @@ class AuthenticationValidation {
       const ip = req.headers["x-forwarded-for"]
       console.log(req.headers)
       console.log(req.connection.remoteAddress)
-
-      if (whitelist.indexOf(ip) !== -1) {
+      const ip2 = req.connection.remoteAddress
+      const splitted_ip = ip2.split(":")
+      if (whitelist.indexOf(splitted_ip[-1]) !== -1) {
         next()
       } else {
         next(Boom.conflict("No permission to access"))
