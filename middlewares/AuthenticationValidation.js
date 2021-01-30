@@ -39,8 +39,10 @@ class AuthenticationValidation {
       const ip2 = req.connection.remoteAddress
       const splitted_ip = ip2.split(":")
       console.log(splitted_ip)
-      console.log(splitted_ip[-1])
-      if (whitelist.indexOf(splitted_ip[-1]) !== -1) {
+      const index = splitted_ip.length -1
+
+      console.log(splitted_ip[index])
+      if (whitelist.indexOf(splitted_ip[index] !== -1) {
         next()
       } else {
         next(Boom.conflict("No permission to access"))
