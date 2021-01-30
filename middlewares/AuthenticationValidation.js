@@ -35,6 +35,7 @@ class AuthenticationValidation {
       //whitelist Settings
       const whitelist = ["176.236.134.7", "176.236.134.6"]
       const ip = req.headers["x-forwarded-for"]
+      console.log(ip)
       if (whitelist.indexOf(ip) !== -1) {
         next()
       } else {
