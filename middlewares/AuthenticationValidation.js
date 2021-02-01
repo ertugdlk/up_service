@@ -35,7 +35,13 @@ class AuthenticationValidation {
       //whitelist Settings
       const whitelist = ["176.236.134.7", "176.236.134.6"]
       const ip = req.headers["x-forwarded-for"]
-      if (whitelist.indexOf(ip) !== -1) {
+      console.log(req.connection.remoteAddress)
+      const ip2 = req.connection.remoteAddress
+      const splitted_ip = ip2.split(":")
+      console.log(splitted_ip)
+      const index = splitted_ip.length - 1
+      console.log(splitted_ip[index])
+      if (whitelist.indexOf(splitted_ip[index]) !== -1) {
         next()
       } else {
         next(Boom.conflict("No permission to access"))
