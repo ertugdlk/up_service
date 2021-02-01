@@ -59,6 +59,9 @@ const options = {
   cert: fs.readFileSync("../server.crt", "utf8"),
 }
 
+/*
+  const server = http.createServer(App) //for local testing
+*/
 const server = Https.createServer(options, App)
 const SocketIO = require("socket.io")(server)
 global.io = SocketIO
@@ -81,6 +84,8 @@ App.use("/detail", require("./routes/DetailRoute"))
 App.use("/room", require("./routes/GameRoomRoute"))
 
 App.use("/rcon", require("./routes/RconRoute"))
+
+App.use("/wallet", require("./routes/WalletRoute"))
 
 App.get(
   "/steam/auth",
