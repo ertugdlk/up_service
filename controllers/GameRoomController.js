@@ -48,6 +48,21 @@ class GameRoomController {
       throw error
     }
   }
+
+  static async existRoomOrNot(req, res, next) {
+    try {
+      const joinedRoom = await GameRoom.findOne({
+        users: { $elemMatch: { nickname: req.body.nickname } },
+      })
+      const hostedRoom = await GameRoom.findOne({ host: req.body.nickname })
+
+      if (joinedRoom || hostedRoom) {
+        res.send({ status: 0, msg: "Exist joined or hosted room" })
+      } else {
+        res.send({ status: 1, msg: "Not any joined or hosted room" })
+      }
+    } catch (error) {}
+  }
 }
 
 module.exports = GameRoomController
