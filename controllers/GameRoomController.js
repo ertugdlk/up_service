@@ -3,6 +3,7 @@ const { getRoom, getRooms } = require("up_core/utils/Redisutil")
 const GameRoomInfo = require("up_core/models/GameRoomInfo")
 const GameRoom = require("up_core/models/GameRoom")
 const Game = require("up_core/models/Game")
+const RoomBlackList = require("up_core/models/RoomBlackList")
 
 class GameRoomController {
   static async getRoomData(req, res, next) {
@@ -61,7 +62,26 @@ class GameRoomController {
       } else {
         res.send({ status: 1, msg: "Not any joined or hosted room" })
       }
-    } catch (error) {}
+    } catch (error) {
+      throw error
+    }
+  }
+
+  static async checkBlackList(req, res, next) {
+    try {
+      const blackList = await RoomBlackList.findOne({ room: room._id })
+      const checkBlackList = _.find(blackList.users, (user) => {
+        return data.nickname == user.nickname
+      })
+
+      if (checkBlackList != undefined) {
+        res.send({ status: 0, msg: "User kicked from this room" })
+      } else {
+        res.send({ status: 1, msg: "User able to join" })
+      }
+    } catch (error) {
+      throw error
+    }
   }
 }
 

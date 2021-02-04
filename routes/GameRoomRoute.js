@@ -12,5 +12,10 @@ router.post(
   Authentication.isJWTVerified,
   controller.existRoomOrNot
 )
+router.post(
+  "/checkblacklist",
+  Authentication.isJWTVerified,
+  controller.checkBlackList
+)
 
 module.exports = router
