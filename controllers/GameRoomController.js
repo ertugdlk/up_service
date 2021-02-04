@@ -24,6 +24,32 @@ class GameRoomController {
     }
   }
 
+  static async getWaitingRooms(req, res, next) {
+    try {
+      const waitingrooms = await GameRoom.find({ status: "waiting" })
+      if (waitingrooms) {
+        res.send(waitingrooms)
+      } else {
+        res.send({ msg: "There are currently no waiting rooms" })
+      }
+    } catch (error) {
+      throw error
+    }
+  }
+
+  static async getPlayingRooms(req, res, next) {
+    try {
+      const ingamerooms = await GameRoom.find({ status: "playing" })
+      if (ingamerooms) {
+        res.send(ingamerooms)
+      } else {
+        res.send({ msg: "There are currently no playing rooms" })
+      }
+    } catch (error) {
+      throw error
+    }
+  }
+
   static async getGameRoom(req, res, next) {
     try {
       const game_room = await GameRoom.findOne({ host: req.body.host })
@@ -69,6 +95,7 @@ class GameRoomController {
 
   static async checkBlackList(req, res, next) {
     try {
+      const room = await GameRoom.findOne({ host: req.body.host })
       const blackList = await RoomBlackList.findOne({ room: room._id })
       const checkBlackList = _.find(blackList.users, (user) => {
         return data.nickname == user.nickname

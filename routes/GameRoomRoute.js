@@ -17,5 +17,15 @@ router.post(
   Authentication.isJWTVerified,
   controller.checkBlackList
 )
+router.get(
+  "/getwaiting",
+  Authentication.isJWTVerified,
+  controller.getWaitingRooms
+)
+router.get(
+  "/getingame",
+  Authentication.isJWTVerified,
+  controller.getPlayingRooms
+)
 
 module.exports = router
