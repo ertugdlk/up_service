@@ -4,60 +4,53 @@ const Game = require("up_core/models/Game")
 
 class DetailController {
   static async getUserGames(req, res, next) {
-
     try {
       const Details = await Detail.find({ user: res.locals.userId })
-      const Games = _.map(Details, 'games')
+      const Games = _.map(Details, "games")
       const AllGames = _.flattenDeep(Games)
       var newArray = []
-      _.forEach(AllGames, function(doc){
+      _.forEach(AllGames, function (doc) {
         newArray.push(doc.id)
       })
       const result = await Game.find({
-        '_id': { $in: newArray }
+        _id: { $in: newArray },
       })
 
       res.send(result)
-    }
-    catch (error) {
+    } catch (error) {
       throw error
     }
   }
 
-  static async getUserDetail(req,res,next) {
-    try{
-      const detail = await Detail.findOne({user: res.locals.userId})
-      if(detail === null){
-        res.send('')
+  static async getUserDetail(req, res, next) {
+    try {
+      const detail = await Detail.findOne({ user: res.locals.userId })
+      if (detail === null) {
+        res.send("")
         res.end()
-      }
-      else{
+      } else {
         res.send(detail.name)
       }
-    }
-    catch(error){
+    } catch (error) {
       throw error
     }
   }
 
   static async setIgn(req, res, next) {
     try {
+      const mappedInfo = _.chain(req.body).pick(["ign", "appId"]).value()
 
-      const mappedInfo =
-        _.chain(req.body)
-          .pick(['ign', 'appId'])
-          .value()
-
-      const updatedDetail = await Detail.findOneAndUpdate({ user: res.locals.userId, 'games.id': mappedInfo.appId },
-        { 'games.$.ign': mappedInfo.ign })
+      const updatedDetail = await Detail.findOneAndUpdate(
+        { user: res.locals.userId, "games.id": mappedInfo.appId },
+        { "games.$.ign": mappedInfo.ign }
+      )
 
       if (!updatedDetail) {
-        res.send({ 'status': 0, 'msg': 'error' })
+        res.send({ status: 0, msg: "error" })
       }
 
-      res.send({ 'status': 1, 'msg': 'success' })
-    }
-    catch (error) {
+      res.send({ status: 1, msg: "success" })
+    } catch (error) {
       throw error
     }
   }
@@ -66,11 +59,26 @@ class DetailController {
     try {
       const games = await Game.find()
       res.send(games)
-
     } catch (error) {
       throw error
     }
+  }
 
+  static async getSteamAvatar(req, res, next) {
+    try {
+      const detail = await Detail.findOne({
+        user: res.locals.userId,
+        platform: "5f9a84fca1f0c0b83de7d696",
+      })
+      if (detail === null) {
+        res.send("")
+        res.end()
+      } else {
+        res.send(detail.avatar)
+      }
+    } catch (error) {
+      throw error
+    }
   }
 }
 
