@@ -58,11 +58,10 @@ const options = {
   key: fs.readFileSync("../server.key", "utf8"),
   cert: fs.readFileSync("../server.crt", "utf8"),
 }
-
 /*
-  const server = http.createServer(App) //for local testing
+const server = http.createServer(App) //for local testing
 */
-const server = Https.createServer(options, App)
+const server = Https.createServer(options, App)//options
 const SocketIO = require("socket.io")(server)
 global.io = SocketIO
 global.io.on("connection", Websockets.connection)
@@ -86,6 +85,8 @@ App.use("/room", require("./routes/GameRoomRoute"))
 App.use("/rcon", require("./routes/RconRoute"))
 
 App.use("/wallet", require("./routes/WalletRoute"))
+
+App.use("/report", require("./routes/ReportRoute"))
 
 App.get(
   "/steam/auth",
