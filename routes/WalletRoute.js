@@ -3,6 +3,6 @@ const Authentication = require("../middlewares/AuthenticationValidation")
 
 const router = require("express").Router()
 
-router.get("/getbalance", controller.getBalance)//add is jwt verified after testing
+router.get("/getbalance", Authentication.isJWTVerified, controller.getBalance)
 
 module.exports = router

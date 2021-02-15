@@ -54,14 +54,20 @@ App.use(function (req, res, next) {
 })
 App.use(Cookie())
 
-const options = {
-  key: fs.readFileSync("../server.key", "utf8"),
-  cert: fs.readFileSync("../server.crt", "utf8"),
+var server
+
+if (process.env.BASE_URL == "http://localhost:5000/") {
+  server = http.createServer(App)
+} else {
+  const options = {
+    key: fs.readFileSync("../server.key", "utf8"),
+    cert: fs.readFileSync("../server.crt", "utf8"),
+  }
+  server = Https.createServer(options, App)
 }
-/*
-const server = http.createServer(App) //for local testing
-*/
-const server = Https.createServer(options, App)//options
+
+//const server = http.createServer(App) //for local testing
+//const server = Https.createServer(options, App)
 const SocketIO = require("socket.io")(server)
 global.io = SocketIO
 global.io.on("connection", Websockets.connection)

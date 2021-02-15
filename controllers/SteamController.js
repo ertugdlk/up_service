@@ -39,18 +39,15 @@ class SteamController {
         detail: userDetail,
       })
       if (detail == null) {
-        res.redirect("https://ertug-2.d4u99xidnqjcw.amplifyapp.com/dashboard/")
+        res.redirect(process.env.FRONT_URL + "dashboard/")
         res.end()
       } else {
         await detail.save()
-        res.redirect(
-          "https://ertug-2.d4u99xidnqjcw.amplifyapp.com/dashboard/" +
-            detail.name
-        )
+        res.redirect(process.env.FRONT_URL + "dashboard/" + detail.name)
       }
     } catch (error) {
       res.status(500).json({ message: "Incorrect authorization token" })
-      res.redirect("https://ertug-2.d4u99xidnqjcw.amplifyapp.com/dashboard/")
+      res.redirect(process.env.FRONT_URL + "dashboard/")
       throw error
     }
   }
