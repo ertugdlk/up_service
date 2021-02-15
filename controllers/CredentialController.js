@@ -4,6 +4,7 @@ const { encrypt, decrypt } = require("up_core/utils/Cryptoutil")
 const { identity } = require("up_core/utils/TCKNutil")
 const User = require("up_core/models/User")
 const Config = require("config")
+const Balance = require("up_core/models/Balance")
 
 class CredentialController {
   static async addCredential(req, res, next) {
@@ -38,6 +39,8 @@ class CredentialController {
           )
           const credential = await new Credential(mappedCredential)
           await credential.save()
+          const wallet = await new Balance({ user: res.locals.userId })
+          await wallet.save()
 
           res.json({
             status: 1,
