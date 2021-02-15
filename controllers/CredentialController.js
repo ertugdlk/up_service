@@ -60,6 +60,7 @@ class CredentialController {
 
   static async getCredential(req, res, next) {
     try {
+      /*
       const credentialOfUser = await Credential.findOne({
         user: res.locals.userId,
       })
@@ -69,6 +70,22 @@ class CredentialController {
         msg: "Success",
         credential: credentialOfUser,
         identity: identity,
+      })
+      */
+
+      const credentialInformation = await Credential.findOne({
+        user: res.locals.userId,
+      })
+
+      const phone = credentialInformation.phone
+      const phoneInformation = [phone.length - 2] + phone[phone.length - 1]
+
+      const userNameSurname =
+        credentialInformation.name + credentialInformation.surname
+
+      res.status(200).send({
+        name: userNameSurname,
+        phone: phoneInformation,
       })
     } catch (error) {
       throw error
