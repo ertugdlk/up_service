@@ -17,6 +17,7 @@ router.post(
   Authentication.isJWTVerified,
   controller.checkBlackList
 )
+
 router.get(
   "/getwaiting",
   Authentication.isJWTVerified,
