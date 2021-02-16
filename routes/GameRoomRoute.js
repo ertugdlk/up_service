@@ -28,4 +28,16 @@ router.get(
   controller.getPlayingRooms
 )
 
+router.get(
+  "/getwaitingfree",
+  Authentication.isJWTVerified,
+  controller.getFreeWaitingRooms
+)
+
+router.get(
+  "/getwaitingpaid",
+  Authentication.isJWTVerified,
+  controller.getPaidWaitingRooms
+)
+
 module.exports = router

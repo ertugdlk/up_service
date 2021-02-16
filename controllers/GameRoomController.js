@@ -23,7 +23,7 @@ class GameRoomController {
       throw error
     }
   }
-
+//get waiting free, get waiting paid
   static async getWaitingRooms(req, res, next) {
     try {
       const waitingrooms = await GameRoom.find({ status: "waiting" })
@@ -31,6 +31,32 @@ class GameRoomController {
         res.send(waitingrooms)
       } else {
         res.send({ msg: "There are currently no waiting rooms" })
+      }
+    } catch (error) {
+      throw error
+    }
+  }
+
+  static async getFreeWaitingRooms(req, res, next) {
+    try {
+      const freewaitingrooms = await GameRoom.find({ status: "waiting", reward: 0 })
+      if (freewaitingrooms) {
+        res.send(freewaitingrooms)
+      } else {
+        res.send({ msg: "There are currently no free waiting rooms" })
+      }
+    } catch (error) {
+      throw error
+    }
+  }
+
+  static async getPaidWaitingRooms(req, res, next) {
+    try {
+      const paidwaitingrooms = await GameRoom.find({ status: "waiting", reward: {$gt: 0} })
+      if (paidwaitingrooms) {
+        res.send(paidwaitingrooms)
+      } else {
+        res.send({ msg: "There are currently no paid waiting rooms" })
       }
     } catch (error) {
       throw error
