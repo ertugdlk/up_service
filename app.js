@@ -10,6 +10,7 @@ const Websockets = require("up_core/utils/Websockets")
 const Https = require("https")
 const http = require("http")
 const fs = require("fs")
+const amqp = require("amqplib")
 
 //DATABASE
 Mongoose.set("useFindAndModify", false) // FindAndModify method is deprecated. If this line is not exists, then it throws error.
@@ -66,11 +67,19 @@ if (process.env.BASE_URL == "http://localhost:5000/") {
   server = Https.createServer(options, App)
 }
 
-//const server = http.createServer(App) //for local testing
-//const server = Https.createServer(options, App)
 const SocketIO = require("socket.io")(server)
 global.io = SocketIO
 global.io.on("connection", Websockets.connection)
+
+//RabbitMQ settings
+//var connReady = false
+var conn
+const RabbitMQ = async () => {
+  conn = await amqp.connect("amqp://localhost:5672")
+  global.channel = await conn.createChannel()
+  await global.channel.assertQueue("backOffice")
+}
+RabbitMQ()
 
 //Service
 server.listen(5000)
