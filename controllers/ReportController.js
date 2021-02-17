@@ -15,6 +15,7 @@ class ReportController {
       if (req.body.message) {
         message = req.body.message
       }
+      //ticket info
       const ticketInfo = {
         reporter: reporter,
         reported: reported,
