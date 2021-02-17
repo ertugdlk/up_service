@@ -72,7 +72,7 @@ global.io = SocketIO
 global.io.on("connection", Websockets.connection)
 
 //RabbitMQ settings
-//var connReady = false
+/*var connReady = false
 var conn
 const RabbitMQ = async () => {
   conn = await amqp.connect("amqp://localhost:5672")
@@ -80,6 +80,7 @@ const RabbitMQ = async () => {
   await global.channel.assertQueue("backOffice")
 }
 RabbitMQ()
+*/
 
 //Service
 server.listen(5000)

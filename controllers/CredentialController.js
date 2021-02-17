@@ -57,6 +57,22 @@ class CredentialController {
       throw error
     }
   }
+  static async checkCredential(req, res, next) {
+    try {
+      const encryptedID = await encrypt(req.body.identityID.toString())
+      const credential = await Credential.findOne({
+        "identityID.content": encryptedID.content,
+      })
+      if (!credential) {
+        next()
+      } else {
+        res.send({ status: 0, msg: "error" })
+        res.end()
+      }
+    } catch (error) {
+      throw error
+    }
+  }
 
   static async getCredential(req, res, next) {
     try {
