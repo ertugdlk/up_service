@@ -26,10 +26,12 @@ class ReportController {
       const ticket = new Ticket(ticketInfo)
       await ticket.save()
 
+      /*
       global.channel.sendToQueue(
         "backOffice",
         Buffer.from(JSON.stringify({ message: "new_ticket", data: ticketInfo }))
       )
+      */
 
       res.send({ msg: "Ticket sent successfully!", status: 1 })
       res.end()
