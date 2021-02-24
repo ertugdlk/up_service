@@ -80,6 +80,7 @@ const RabbitMQ = async () => {
   global.channel = await conn.createChannel()
   await global.channel.assertQueue("backOffice")
 }
+
 RabbitMQ()
 */
 
