@@ -13,7 +13,7 @@ class CredentialController {
         .pick(["user", "identityID", "phone", "name", "surname", "dateOfBirth"])
         .value()
 
-      //Date Format
+      //Date Format 
       const splittedDate = mappedCredential.dateOfBirth.split("-")
       const date = new Date()
       date.setFullYear(splittedDate[2], splittedDate[1] - 1, splittedDate[0])

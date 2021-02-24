@@ -31,7 +31,7 @@ class ReportController {
         "backOffice",
         Buffer.from(JSON.stringify({ message: "new_ticket", data: ticketInfo }))
       )
-      
+
       */
 
       res.send({ msg: "Ticket sent successfully!", status: 1 })
