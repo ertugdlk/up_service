@@ -131,6 +131,7 @@ class AuthController {
       } else {
         const token = await user.generateAuthToken()
 
+        //cookie header settings
         res.header("credentials", "include")
         res.header("Access-Control-Allow-Credentials", true)
 
