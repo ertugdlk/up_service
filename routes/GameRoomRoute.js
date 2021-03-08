@@ -41,4 +41,9 @@ router.get(
   controller.getPaidWaitingRooms
 )
 
+router.post(
+  "/setlastmap",
+  Authentication.isJWTVerified,
+  controller.setLastMap
+)
 module.exports = router

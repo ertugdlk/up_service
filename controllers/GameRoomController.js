@@ -138,6 +138,18 @@ class GameRoomController {
       throw error
     }
   }
+
+  static async setLastMap(req, res, next) {
+    try {
+      const room = await GameRoom.findOne({host:req.body.host})
+      room.settings.map = req.body.last_map
+      await room.save()
+      res.send({ status: 1, msg: "Last selected map set" })
+    } catch (error) {
+      throw error
+    }
+  }
+  
 }
 
 module.exports = GameRoomController
