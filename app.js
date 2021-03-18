@@ -105,6 +105,7 @@ App.use("/rcon", require("./routes/RconRoute"))
 App.use("/wallet", require("./routes/WalletRoute"))
 
 App.use("/report", require("./routes/ReportRoute"))
+App.use("/pay", require("./routes/PaymentRoute"))
 
 App.get(
   "/steam/auth",
