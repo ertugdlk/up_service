@@ -4,6 +4,7 @@ const CryptoJS = require('crypto-js')
 var querystring = require('querystring');
 var http = require('http');
 var fs = require('fs');
+var exec = require('child_process').exec
 var execPhp = require('exec-php');
 const fetch = require("node-fetch");
 const axios = require('axios')
@@ -107,11 +108,23 @@ class Pay2DController{
         
         // let hash_key = this.generateHashKey(total, installment,currency_code,
         //     this.merchant_key, invoice_id, this.app_secret)
-
-        execPhp('../php/hash.php', async function(error, php, outprint){
+         
+        // var phpScriptPath = "path/to/your/php/script.php";
+        // var argsString = "value1,value2,value3";
+        // runner.exec("php " + phpScriptPath + " " +argsString, function(err, phpResponse, stderr) {
+        // if(err) console.log(err); /* log error */
+        // console.log( phpResponse );
+        // });
+        var phpScriptPath = "php/hash.php";
+        var m1 = '$',m2 = '2y$',m3 = '10$', m4 = 'Rv/hx97L85vyk75v8Q3Npuztx6SxP1NccuH6qte6Xmt4muN1lVXya'
+        var mk = "" + m1+m2+m3+m4
+        var argsString = "0.10,1,TRY," + m1 +","+ m2 +","+ m3 +","+ m4 +","+invoice_id+",2cabc9bf1b40f5faf976db7941892fdb";
+        //var argsString = "0.10,1,TRY"
+        exec("php "+phpScriptPath+" "+argsString, async function(err, phpResponse, stderr){
+            if(err) console.log(err); /* log error */
             // outprint is now `One'.
             
-            var x = await php.generate_hash_key("0.10", "1","TRY","$2y$10$Rv/hx97L85vyk75v8Q3Npuztx6SxP1NccuH6qte6Xmt4muN1lVXya",invoice_id,"2cabc9bf1b40f5faf976db7941892fdb", async function(err, result, output, printed){
+
                 let invoice = {
                     'merchant_key' : '$2y$10$Rv/hx97L85vyk75v8Q3Npuztx6SxP1NccuH6qte6Xmt4muN1lVXya',
                     'invoice_id' : invoice_id,
@@ -125,7 +138,7 @@ class Pay2DController{
                     'expiry_year' : req.body.expiry_year,
                     'cvv' :  req.body.cvv,
                     'installments_number' : installment,
-                    'hash_key' : result,
+                    'hash_key' : phpResponse,
                     'name' : name,
                     'surname' : surname,
                 }
@@ -214,7 +227,7 @@ class Pay2DController{
                 
 
 
-            });
+
         });
     } catch (error) {
           throw error  
