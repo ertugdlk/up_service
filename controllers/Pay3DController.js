@@ -1,9 +1,4 @@
 const _ = require("lodash")
-const crypto = require('crypto');
-const CryptoJS = require('crypto-js')
-var querystring = require('querystring');
-var http = require('http');
-var fs = require('fs');
 var execPhp = require('exec-php');
 const fetch = require("node-fetch");
 const axios = require('axios')
@@ -110,7 +105,7 @@ class Pay2DController{
             
             var x = await php.generate_hash_key("0.10", "1","TRY","$2y$10$Rv/hx97L85vyk75v8Q3Npuztx6SxP1NccuH6qte6Xmt4muN1lVXya",invoice_id,"2cabc9bf1b40f5faf976db7941892fdb", async function(err, result, output, printed){
                 let invoice = {
-                    'merchant_key' : '$2y$10$Rv/hx97L85vyk75v8Q3Npuztx6SxP1NccuH6qte6Xmt4muN1lVXya',
+                    'merchant_key' : req.body.merchant_key,
                     'invoice_id' : invoice_id,
                     'total' : total,
                     'items' : items,
