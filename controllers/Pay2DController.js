@@ -79,6 +79,9 @@ class Pay2DController{
      
 
     static async paySmart2D(req,res,next){
+        try {
+            
+       
         let invoice_id = parseInt(Math.random()*1000000).toString()
         let currency_code = req.body.currency_code
         let total = 0
@@ -87,7 +90,7 @@ class Pay2DController{
         let items = req.body.items //array of objects every object represents a product and the quantity,price,description of that product
 
         items.forEach(item => {
-            let productPrice = item.price * item.quantity
+            let productPrice = parseFloat(item.price) * parseFloat(item.quantity)
             total = total + productPrice
         });
 
@@ -213,6 +216,9 @@ class Pay2DController{
 
             });
         });
+    } catch (error) {
+          throw error  
+    }
         
         
     }
