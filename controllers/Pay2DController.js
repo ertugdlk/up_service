@@ -189,7 +189,7 @@ class Pay2DController{
                     if(resp.data.status_code === 100){
                         var user = await User.findOne({nickname:req.body.nickname}) 
                         var wallet = await Balance.findOne({user:user._id})
-                        wallet.balance += parseInt(req.body.total)*10
+                        wallet.balance += parseFloat(req.body.total)*10
                         await wallet.save()
                         var masked_cc_no = req.body.cc_no.substr(0,4)
                         masked_cc_no += " **** **** "
