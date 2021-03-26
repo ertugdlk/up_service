@@ -124,7 +124,7 @@ class Pay2DController{
             if(err) console.log(err); /* log error */
             // outprint is now `One'.
             
-
+                console.log("HASHAHSAHASHASHash KEY:"+phpResponse)
                 let invoice = {
                     'merchant_key' : '$2y$10$Rv/hx97L85vyk75v8Q3Npuztx6SxP1NccuH6qte6Xmt4muN1lVXya',
                     'invoice_id' : invoice_id,
