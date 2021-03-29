@@ -106,6 +106,7 @@ App.use("/wallet", require("./routes/WalletRoute"))
 
 App.use("/report", require("./routes/ReportRoute"))
 App.use("/pay", require("./routes/PaymentRoute"))
+App.use("/transactions", require("./routes/TransactionRoute"))
 
 App.get(
   "/steam/auth",
