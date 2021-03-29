@@ -3,6 +3,6 @@ const Authentication = require("../middlewares/AuthenticationValidation")
 
 const router = require("express").Router()
 
-router.get("/mytransactions", controller.getTransactions)
+router.get("/mytransactions",Authentication.isJWTVerified, controller.getTransactions)
 
 module.exports = router
