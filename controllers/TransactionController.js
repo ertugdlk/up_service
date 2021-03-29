@@ -1,4 +1,3 @@
-const Balance = require("up_core/models/Balance")
 const User = require("up_core/models/User")
 const Transaction = require('up_core/models/Transaction')
 class TransactionController {
@@ -10,6 +9,7 @@ class TransactionController {
       res.send({ status: 0, msg: "ERROR no user found" })
       res.end()
     }
+    if(user){
     const transactions = await Transaction.find({ user: user._id })
     if (!transactions) {
       res.send({
@@ -20,6 +20,7 @@ class TransactionController {
 
     res.send({ transactions: transactions, msg: "Your transactions.",status:1 })
   }
+}
 }
 
 module.exports = TransactionController
