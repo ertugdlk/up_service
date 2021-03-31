@@ -108,6 +108,8 @@ App.use("/report", require("./routes/ReportRoute"))
 App.use("/pay", require("./routes/PaymentRoute"))
 App.use("/transactions", require("./routes/TransactionRoute"))
 
+App.use("/paysecure", require("./routes/SecurePaymentRoute"))
+
 App.get(
   "/steam/auth",
   passport.authenticate("steam", { failureRedirect: "/" }),
