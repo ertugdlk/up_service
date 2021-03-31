@@ -3,7 +3,7 @@ const Controller = require("../controllers/Pay3DController")
 const Authentication = require("../middlewares/AuthenticationValidation")
 
 //Routes
-router.get("/3Dparams",  Controller.get3Dparams)
+router.post("/3Dparams",  Controller.get3Dparams)
 
 
 module.exports = router
