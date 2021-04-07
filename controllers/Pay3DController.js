@@ -19,9 +19,17 @@ class Pay3DController{
     status_message = '';
     response = null;
     
+
+    /**
+     * 
+     * @param {nickname, currency_code, items, invoice_description,cc_holder_name,} req 
+     * @param {*} res 
+     * @param {*} next 
+     */
     static async get3Dparams(req,res,next){
         try {
-            let invoice_id = parseInt(Math.random()*1000000).toString()
+            let user = await User.findOne({nickname:req.body.nickname})
+            let invoice_id = parseInt(Math.random()*100000000).toString()
             let currency_code = req.body.currency_code
             let total = 0
             let installment = 0
@@ -78,19 +86,78 @@ class Pay3DController{
                 var requestData = invoice;
                 var reqparams = requestData
                 var postUrl =  "https://app.sipay.com.tr" + "/ccpayment/api/paySmart3D";
-                res.send(invoice)
-
-                /**
-                 * not:
-                 * //burada transaction a tüm bilgileri kaydet statusu waiting yap, sonra duruma göre success ya da fail dersin
-                 * 
-                 */
                 
+                var masked_cc_no = req.body.cc_no.substr(0,4)
+                masked_cc_no += " **** **** "
+                masked_cc_no += req.body.cc_no.substr(12,16)
+                var transaction = new Transaction({
+                    user:user._id
+                    ,cc_holder_name:req.body.cc_holder_name
+                    ,masked_cc_no:masked_cc_no
+                    ,currency_code:req.body.currency_code
+                    ,invoice_id:invoice_id
+                    ,invoice_description:req.body.invoice_description
+                    ,total:total
+                    ,items:items
+                    ,status_msg:"Transaction Pending"
+                    ,status_code:"Waiting"
+                    ,transaction_id:""})
+                await transaction.save()
+
+                res.send(invoice)
 
             });
         } catch (error) {
             throw error  
         }   
+    }
+
+/**
+ * Req body @params
+ * nickname
+ * order_no
+ * invoice_id
+ * status_code
+ * status_description
+ * error
+ */
+    static async setStatus(req, res, next){
+        try {
+            /**
+             * Example response @params of pay3D form submit
+             * sipay_status=1
+             * &order_no=16176965546261
+             * &invoice_id=52632
+             * &status_code=100
+             * &status_description=success
+             * &sipay_payment_method=1
+             * &error_code=100
+             * &error=success
+             * &hash_key=a36702bb52214ca2%3A3c15%3Au%2BdGmlwPBy1DYL3VWpJxCWyBsCzsh6Qu__QN95zs__wsU%3D
+             */
+            var user = await User.findOne({nickname:req.body.nickname})
+            var transaction = await Transaction.findOne({user:user._id,invoice_id:req.body.invoice_id})
+            transaction.order_id = req.body.order_no;
+            if(req.body.status_code !== 100)//failed transaction case
+            {
+                transaction.status_msg = req.body.status_description;
+                transaction.status_code = "0";
+                await transaction.save();
+            }
+            else if(req.body.status_code === 100)
+            {
+                transaction.status_msg = req.body.status_description;
+                transaction.status_code = "0";
+                var wallet = await Balance.findOne({user:user._id})
+                wallet += transaction.coin;
+                await wallet.save();
+                await transaction.save();
+            }
+            res.send({status_code:req.body.status_code,status_description:req.body.status_description})
+
+        } catch (error) {
+            throw error
+        }
     }
 
 }
