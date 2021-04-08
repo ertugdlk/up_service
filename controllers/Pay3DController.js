@@ -92,6 +92,7 @@ class Pay3DController{
                 masked_cc_no += req.body.cc_no.substr(12,16)
                 var transaction = new Transaction({
                     user:user._id
+                    ,coin: req.body.coin
                     ,cc_holder_name:req.body.cc_holder_name
                     ,masked_cc_no:masked_cc_no
                     ,currency_code:req.body.currency_code

@@ -109,6 +109,7 @@ App.use("/pay", require("./routes/PaymentRoute"))
 App.use("/transactions", require("./routes/TransactionRoute"))
 
 App.use("/paysecure", require("./routes/SecurePaymentRoute"))
+App.use("/matchHistories",require("./routes/MatchHistoryRoute"))
 
 App.get(
   "/steam/auth",
