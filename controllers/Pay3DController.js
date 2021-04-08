@@ -139,7 +139,7 @@ class Pay3DController{
             var user = await User.findOne({nickname:req.body.nickname})
             var transaction = await Transaction.findOne({user:user._id,invoice_id:req.body.invoice_id})
             transaction.order_id = req.body.order_no;
-            if(req.body.status_code !== 100)//failed transaction case
+            if(parseInt(req.body.status_code) !== 100)//failed transaction case
             {
                 transaction.status_msg = req.body.status_description;
                 transaction.status_code = "0";
@@ -147,14 +147,17 @@ class Pay3DController{
 
                 await transaction.save();
             }
-            else if(req.body.status_code === 100)
+            if(req.body.status_code === 100 || req.body.status_code === "100")
             {
+                console.log("I am in \n")
                 transaction.status_msg = req.body.status_description;
-                transaction.status_code = "0";
+                transaction.status_code = "100";
                 transaction.transaction_id = req.body.order_no
                 
                 var wallet = await Balance.findOne({user:user._id})
+                console.log("WALLET BALANCE: " + wallet.balance+"\n")
                 wallet.balance += transaction.coin;
+                console.log("WALLET BALANCE: " + wallet.balance+"\n")
                 await wallet.save();
                 await transaction.save();
             }
