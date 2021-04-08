@@ -22,7 +22,7 @@ class Pay3DController{
 
     /**
      * 
-     * @param {nickname, currency_code, items, invoice_description,cc_holder_name,} req 
+     * @param {nickname, currency_code, items, invoice_description,cc_holder_name, coin} req 
      * @param {*} res 
      * @param {*} next 
      */
@@ -154,7 +154,7 @@ class Pay3DController{
                 transaction.transaction_id = req.body.order_no
                 
                 var wallet = await Balance.findOne({user:user._id})
-                wallet += transaction.coin;
+                wallet.balance += transaction.coin;
                 await wallet.save();
                 await transaction.save();
             }
