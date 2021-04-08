@@ -69,7 +69,7 @@ class Pay3DController{
                     'installments_number' : installment,
                     'hash_key' : phpResponse,
                     'cancel_url': 'https://google.com',
-                    'return_url': 'https://ertug-2.d4u99xidnqjcw.amplifyapp.com/dashboard'
+                    'return_url': 'https://ertug-2.d4u99xidnqjcw.amplifyapp.com/success'
                 }
 
                 /* implement later */
