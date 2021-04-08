@@ -125,3 +125,10 @@ App.get(
     res.redirect("localhost:3000/dashboard")
   }
 )
+
+App.get(
+  "/success",
+  function (req, res) {
+    res.send("success")
+  }
+)

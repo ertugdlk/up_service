@@ -101,7 +101,7 @@ class Pay3DController{
                     ,items:items
                     ,status_msg:"Transaction Pending"
                     ,status_code:"Waiting"
-                    ,transaction_id:""})
+                    ,transaction_id:"Waiting"})
                 await transaction.save()
 
                 res.send(invoice)
@@ -142,12 +142,16 @@ class Pay3DController{
             {
                 transaction.status_msg = req.body.status_description;
                 transaction.status_code = "0";
+                transaction.transaction_id = "Failed"
+
                 await transaction.save();
             }
             else if(req.body.status_code === 100)
             {
                 transaction.status_msg = req.body.status_description;
                 transaction.status_code = "0";
+                transaction.transaction_id = req.body.order_no
+                
                 var wallet = await Balance.findOne({user:user._id})
                 wallet += transaction.coin;
                 await wallet.save();
