@@ -29,6 +29,7 @@ Mongoose.connection.on("error", function (err) {
 const whitelist = [
   "https://ertug-2.d4u99xidnqjcw.amplifyapp.com",
   "http://localhost:3000",
+  "https://beta.unknownpros.com/",
 ]
 const corsOptions = {
   origin: function (origin, callback) {
